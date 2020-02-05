@@ -1,0 +1,525 @@
+<div *ngIf="isShowDataGrid && !isLoading">
+    <div class="toolbars">
+        <div class="toolbar-btn" (click)="onClickAddItem()">
+            <div class="toolbar-btn-icon"> <i class="fas fa-plus"></i> </div> <span class="toolbar-btn-text"> Thêm mới
+            </span>
+        </div>
+        <div class="toolbar-btn">
+            <div class="toolbar-btn-icon"> <i class="fas fa-sync-alt"></i> </div> <span class="toolbar-btn-text"> Nạp
+            </span>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="grid-master grid-wrapper">
+            <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small"
+                [nzWidthConfig]="widthConfig" [nzPageSize]="14" [nzScroll]="scrollConfig">
+                <thead>
+                    <tr>
+                        <th> Mã nhân viên </th>
+                        <th>Tên nhân viên</th>
+                        <th> Giới tính </th>
+                        <th>Ngày sinh</th>
+                        <th>Số điện thoại</th>
+                        <th>Trạng thái làm việc</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of groupingTable.data">
+                        <td>{{ data.StaffCode }}</td>
+                        <td class="no-cell" (click)="onClickEditItem(data)">{{ data.StaffName }}</td>
+                        <td>{{ data.Gender }}</td>
+                        <td class="text-center">{{ data.Birthday | date: 'dd/MM/yyyy'}}</td>
+                        <td class="text-center">{{ data.MobilePhone }}</td>
+                        <td>{{ data.WokingStatus }}</td>
+                        <td class="option-column">  <i (click)="onClickEditItem(data)" class="option-icon fas fa-pencil-alt"></i> <i (click)="onClickRemoveItem(data)" class="option-icon fas fa-trash"></i>   </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
+<div *ngIf="!isShowDataGrid" class="employee-form">
+    <form class="tab-panel-content">
+        <dx-validation-group>
+    <!-- <div > -->
+        <dx-tab-panel #tabPanel [dataSource]="employeeForm" [selectedIndex]="0" class="tab-panel">
+            <div *dxTemplate="let company of 'basic-info'">
+                <div class="basic-info-form">
+                    <div class="dis-flex">
+                        <div class="left-60">
+                            <div class="dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div> Mã nhân viên <span class="require">*</span> </div>
+                                        <div>
+                                            <dx-text-box [disabled]="true" [(value)]="staffObj.StaffCode"></dx-text-box>
+                                        </div>
+                                    </div>
+                                    <div class="grid-2-150">
+                                        <div></div>
+                                        <div class="s-i-text">
+                                            Dùng làm tên đăng nhập vào hệ thống
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-side-form">
+                                    <div class="grid-2-150">
+                                        <div> Tên nhân viên <span class="require">*</span> </div>
+                                        <div>
+                                            <dx-text-box [(value)]="staffObj.StaffName">
+                                                <dx-validator>
+                                                    <dxi-validation-rule type="required" message="Không được để trống">
+                                                    </dxi-validation-rule>
+                                                </dx-validator>
+                                            </dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div> Mật khẩu <span class="require">*</span> </div>
+                                        <div>
+                                            <dx-text-box mode="password" [(value)]="staffObj.Password">
+                                                <dx-validator>
+                                                    <dxi-validation-rule type="required" message="Không được để trống">
+                                                    </dxi-validation-rule>
+                                                </dx-validator>
+                                            </dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-side-form">
+                                    <div class="grid-2-150">
+                                        <div> Xác nhận MK <span class="require">*</span> </div>
+                                        <div>
+                                            <dx-text-box mode="password" [(value)]="staffObj.Password">
+                                                <dx-validator>
+                                                    <dxi-validation-rule type="required" message="Không được để trống">
+                                                    </dxi-validation-rule>
+                                                </dx-validator>
+                                            </dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dis-flex m-t-8">
+                                <div class="grid-2-150">
+                                    <div> Vai trò <span class="require">*</span> </div>
+                                    <div>
+
+                                        <dx-radio-group class="role-radio-btn" valueExpr="ID"
+                                        [dataSource]="roleTypes" displayExpr="Name"
+                                            [(value)]="staffObj.RoleType" layout="horizontal">
+                   
+                                        </dx-radio-group>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right-40">
+                            <div class="dis-flex">
+                                <div class="employee-pic-label"> Ảnh nhân viên
+                                    <div class="s-i-text">Định dạng ảnh (.jpg, .jpeg, .png) <br> và dung lượng < 5MB
+                                            </div> </div> <div class="employee-picture-area">
+                                            <img *ngIf="employeePicSrc" [src]="employeePicSrc" class="employee-picture">
+                                            <dx-button class="choose-picture-btn" stylingMode="outlined" text="Chọn ảnh"
+                                                type="default" [width]="120" (onClick)="employeePic.click()">
+                                            </dx-button>
+                                            <input #employeePic type="file" onclick="this.value = null" class="dis-none"
+                                                (change)="uploadImage($event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="dis-flex m-t-8">
+                            <div class="left-60">
+                                <div class="dis-flex">
+                                    <div class="left-side-form">
+                                        <div class="grid-2-150">
+                                            <div>
+                                                Ngày sinh
+                                            </div>
+                                            <div>
+                                                <dx-date-box [(value)]="staffObj.Birthday" displayFormat="dd/MM/yyyy" placeholder="dd/MM/yyyy">
+                                                </dx-date-box>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right-side-form">
+                                        <div class="grid-2-150">
+                                            <div>Giới tính</div>
+                                            <div>
+                                                <dx-radio-group class=""  [items]="gender" [value]="staffObj.Gender"
+                                                    layout="horizontal">
+                                                </dx-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dis-flex m-t-8">
+                            <div class="left-60">
+                                <div class="dis-flex">
+                                    <div class="left-side-form">
+                                        <div class="grid-2-150">
+                                            <div>
+                                                Số CMND
+                                            </div>
+                                            <div>
+                                                <dx-text-box [(value)]="staffObj.IdentityNumber" ></dx-text-box>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right-side-form">
+                                        <div class="grid-2-150">
+                                            <div>
+                                                Ngày cấp
+                                            </div>
+                                            <div>
+                                                <dx-date-box [(value)]="staffObj.DateOfIssued" displayFormat="dd/MM/yyyy" placeholder="dd/MM/yyyy">
+                                                </dx-date-box>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-40">
+                                <div class="grid-2-150">
+                                    <div>Nơi cấp</div>
+                                    <div>
+                                        <dx-text-box [(value)]="staffObj.PlaceOfIssued"></dx-text-box>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *dxTemplate="let company of 'contact-info'">
+                    <div class="contact-info-form">
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div>ĐT di động</div>
+                                        <div>
+                                            <dx-text-box [(value)]="staffObj.MobilePhone"></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-side-form">
+                                    <div class="grid-2-150">
+                                        <div>ĐT nhà riêng</div>
+                                        <div>
+                                            <dx-text-box [(value)]="staffObj.HomePhone"></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-40">
+                                <div class="grid-2-150">
+                                    <div>Email</div>
+                                    <div>
+                                        <dx-text-box [(value)]="staffObj.Email"></dx-text-box>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup-form-title">
+                            HỘ KHẨU THƯỜNG TRÚ
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60">
+                                <div class="grid-2-150">
+                                    <div>Địa chỉ</div>
+                                    <div>
+                                        <dx-text-box [(value)]="staffObj.RegularAddress"></dx-text-box>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-40">
+                                <div class="grid-2-150">
+                                    <div>Quốc gia</div>
+                                    <div>
+                                        <dx-select-box [(value)]="staffObj.RegularNation" [items]="nations" [searchEnabled]="true"></dx-select-box>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div>Tỉnh/TP</div>
+                                        <div>
+                                            <dx-select-box [(value)]="staffObj.RegularProvince" [items]="provinces" [searchEnabled]="true"></dx-select-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-side-form">
+                                    <div class="grid-2-150">
+                                        <div>Quận/Huyện</div>
+                                        <div>
+                                            <dx-select-box  [(value)]="staffObj.RegularDistrict" [items]="districts" [searchEnabled]="true">    </dx-select-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-40">
+                                <div class="grid-2-150">
+                                    <div>Xã/Phường</div>
+                                    <div>
+                                        <dx-select-box [(value)]="staffObj.RegularTown" [items]="towns" [searchEnabled]="true"> </dx-select-box>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup-form-title">
+                            CHỖ Ở HIỆN TẠI
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60">
+                                <div class="grid-2-150">
+                                    <div>Địa chỉ</div>
+                                    <div>
+                                        <dx-text-box [(value)]="staffObj.RecentAddress"></dx-text-box>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-40">
+                                <div class="grid-2-150">
+                                    <div>Quốc gia</div>
+                                    <div>
+                                        <dx-select-box [(value)]="staffObj.RecentNation" [items]="nations" [searchEnabled]="true" ></dx-select-box>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div>Tỉnh/TP</div>
+                                        <div>
+                                            <dx-select-box [(value)]="staffObj.RecentProvince" [items]="provinces" [searchEnabled]="true"></dx-select-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-side-form">
+                                    <div class="grid-2-150">
+                                        <div>Quận/Huyện</div>
+                                        <div>
+                                            <dx-select-box [(value)]="staffObj.RecentDistrict" [items]="districts" [searchEnabled]="true">  </dx-select-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-40">
+                                <div class="grid-2-150">
+                                    <div>Xã/Phường</div>
+                                    <div>
+                                        <dx-select-box [(value)]="staffObj.RecentTown" [items]="towns" [searchEnabled]="true"> </dx-select-box>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup-form-title">
+                            LIÊN HỆ KHẨN CẤP
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div>Họ và tên</div>
+                                        <div>
+                                            <dx-text-box [(value)]="staffObj.EmerContactName"></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-side-form">
+                                    <div class="grid-2-150">
+                                        <div>Quan hệ</div>
+                                        <div>
+                                            <dx-text-box [(value)]="staffObj.EmerContactRelation"></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-40">
+                                <div class="grid-2-150">
+                                    <div>ĐT di động</div>
+                                    <div>
+                                        <dx-text-box [(value)]="staffObj.EmerContactMobilePhone"></dx-text-box>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div>ĐT nhà riêng</div>
+                                        <div>
+                                            <dx-text-box [(value)]="staffObj.EmerContactHomePhone" ></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-side-form">
+                                    <div class="grid-2-150">
+                                        <div>Email</div>
+                                        <div>
+                                            <dx-text-box [(value)]="staffObj.EmerContactEmail"></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-40">
+                                <div class="grid-2-150">
+                                    <div>Địa chỉ</div>
+                                    <div>
+                                        <dx-text-box [(value)]="staffObj.EmerContactAddress"></dx-text-box>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *dxTemplate="let company of 'document-info'">
+                    <div class="document-info-form">
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div class="font-bold"> Mức lương <span class="require">*</span> </div>
+                                        <div>
+                                            <dx-text-box [(value)]="staffObj.Salary">
+                                                <dx-validator>
+                                                    <dxi-validation-rule type="required" message="Không được để trống">
+                                                    </dxi-validation-rule>
+                                                </dx-validator>
+                                            </dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div class="font-bold"> Thời gian làm việc </div>
+                                        <div>
+                                            <dx-select-box [(value)]="staffObj.TimeWokingStatus" [searchEnabled]="true" [items]="workTimeStatus" placeholder="Thời gian làm việc">
+                                            </dx-select-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div class="font-bold" > Cửa hàng làm việc <span class="require">*</span></div>
+                                        <div>
+                                            <dx-select-box [(value)]="staffObj.ShopID" valueExpr="ShopID"  placeholder="Cửa hàng"
+                                            [dataSource]="shopList" displayExpr="ShopName" [searchEnabled]="true">
+                                            <dx-validator>
+                                                <dxi-validation-rule type="required" message="Không được để trống">
+                                                </dxi-validation-rule>
+                                            </dx-validator></dx-select-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div class="font-bold"> Trạng thái làm việc </div>
+                                        <div>
+                                            <dx-select-box [(value)]="staffObj.WokingStatus" [searchEnabled]="true" [items]="workStatus" placeholder="Trạng thái làm việc">
+                                            </dx-select-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div> Thử việc từ ngày  </div>
+                                        <div>
+                                            <dx-date-box displayFormat="dd/MM/yyyy" [(value)]="staffObj.TryingWorkFrom" placeholder="dd/MM/yyyy">
+                                            </dx-date-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-side-form">
+                                    <div class="grid-2-150">
+                                        <div> đến ngày </div>
+                                        <div>
+                                            <dx-date-box displayFormat="dd/MM/yyyy" [(value)]="staffObj.TryingWorkTo" placeholder="dd/MM/yyyy">
+                                            </dx-date-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dis-flex">
+                            <div class="left-60 dis-flex">
+                                <div class="left-side-form">
+                                    <div class="grid-2-150">
+                                        <div> Chính thức từ ngày </div>
+                                        <div>
+                                            <dx-date-box displayFormat="dd/MM/yyyy" [(value)]="staffObj.OffcialWorkFrom" placeholder="dd/MM/yyyy">
+                                            </dx-date-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-side-form">
+                                    <div class="grid-2-150">
+                                        <div> hợp đồng đến </div>
+                                        <div>
+                                            <dx-date-box displayFormat="dd/MM/yyyy" [(value)]="staffObj.OffcialWorkTo" placeholder="dd/MM/yyyy">
+                                            </dx-date-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </dx-tab-panel>
+    <!-- </div> -->
+</dx-validation-group>
+</form>
+    <div class="employee-form-footer">
+        <div class="footer-btn">
+            <dx-button stylingMode="contained" text="Lưu" icon="fa fa-save" type="default" [width]="120"
+                (onClick)="onSave($event)">
+            </dx-button>
+        </div>
+        <div class="footer-btn">
+            <dx-button stylingMode="text" text="Hủy" icon="fas fa-times" type="normal" [width]="120"
+                (onClick)="cancelEmployeeForm($event)">
+            </dx-button>
+        </div>
+    </div>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>
+
+<popup-delete *ngIf="visibleDelPopup"
+    [title]="popupDeleteObj.title"
+    [content]="popupDeleteObj.content"
+    [delItemID]="popupDeleteObj.itemDelId"
+    [(visible)]="popupDeleteObj.itemDelId"
+    (cancelDel)="cancelDel($event)" 
+    (confirmDel)="confirmDelele($event)" ></popup-delete>

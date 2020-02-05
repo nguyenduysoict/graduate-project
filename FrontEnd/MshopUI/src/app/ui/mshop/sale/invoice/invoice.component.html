@@ -1,0 +1,158 @@
+<div *ngIf="!isLoading" class="invoice-container">
+
+    <button nz-button nzType="primary" (click)="onSave()"> <i nz-icon nzType="file-done" nzTheme="outline"></i> Lập
+        phiếu </button>
+
+    <div class="invoice-form">
+        <div class="dis-flex-cen">
+            <div class="left-side-form-input">
+                <div class="grid-2-150">
+                    <div>Số điện thoại</div>
+                    <div>
+                        <dx-select-box [dataSource]="customerList" displayExpr="PhoneNumber" valueExpr="PhoneNumber"
+                            placeholder="Số điện thoại" (onValueChanged)="onChangePhoneNumber($event)"
+                            [searchEnabled]="true" [acceptCustomValue]="true"
+                            [(value)]="invoiceObj.CustomerPhone"
+                            (onCustomItemCreating)="onCustomItemCreating($event)"></dx-select-box>
+                    </div>
+                </div>
+                <div class="grid-2-150">
+                    <div> Tên khách hàng </div>
+                    <div>
+                        <dx-text-box [(value)]="invoiceObj.CustomerName"></dx-text-box>
+                    </div>
+                </div>
+
+                <div class="grid-2-150">
+                    <div>Địa chỉ</div>
+                    <div>
+                        <dx-text-box [(value)]="invoiceObj.CustomerAddress"></dx-text-box>
+
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-form-input">
+                <div class="grid-2-150">
+                    <div>Số phiếu</div>
+                    <div class="dis-flex-cen">
+                        <div>
+                            <dx-text-box [disabled]="true" [(value)]="invoiceObj.InvoiceNo"> </dx-text-box>
+                        </div>
+                        <div class="grid-2 inline-grid">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="grid-2-150">
+
+                    <div>Ngày xuất</div>
+                    <div class="dis-flex-cen">
+                        <div>
+                            <dx-date-box type="date" [(value)]="invoiceObj.InvoiceDate" displayFormat="dd/MM/yyyy"
+                                placeholder="dd/MM/yyyy">
+                            </dx-date-box>
+                        </div>
+                        <div class="grid-2 inline-grid">
+                            <div> Giờ xuất </div>
+                            <div>
+                                <dx-date-box type="time" [(value)]="invoiceObj.InvoiceDate" displayFormat="HH:mm"
+                                    placeholder="HH:mm">
+                                </dx-date-box>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="grid-2-150">
+                    <div> Nhân viên thu ngân </div>
+                    <div>
+                        <dx-text-box [disabled]="true" [value]="currentStaff"></dx-text-box>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="grid-2-150">
+            <div> Diễn giải </div>
+            <div>
+                <dx-text-box [(value)]="invoiceObj.Description"></dx-text-box>
+            </div>
+        </div>
+        <div class="grid-2-150">
+            <div> Phương thức thanh toán</div>
+            <div>
+                <dx-radio-group class="role-radio-btn" valueExpr="value" [dataSource]="payOptions" displayExpr="name"
+                    [(value)]="invoiceObj.IsCash" layout="horizontal">
+                </dx-radio-group>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div style="font-weight: bold; font-size: 16px; padding: 8px 0;">
+            Danh sách hàng hóa
+        </div>
+        <div>
+            <nz-table #groupingTable class="items-grid" [nzData]="invoiceItemList" nzBordered nzSize="small"
+                [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã hàng hóa</th>
+                        <th>Tên hàng hóa</th>
+                        <th>Màu sắc</th>
+                        <th>Size</th>
+                        <th>Đơn vị tính</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="table-with-control">
+                    <tr *ngFor="let data of groupingTable.data; let i = index" [class.dis-none]="!data.IsShow">
+                        <td class="text-center"> {{i+1}} </td>
+                        <td class="td-out-control">
+                            <div>
+                                <dx-select-box class="control-in-grid" [dataSource]="goodsList" displayExpr="SKUCode"
+                                    valueExpr="this" [searchEnabled]="true" (onValueChanged)="onSelectItem($event, i)"
+                                    placeholder="Nhập mã hàng hóa">
+                                </dx-select-box>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            {{data.ItemName}}
+                        </td>
+                        <td class="text-center">
+                            {{data.Color}}
+                        </td>
+                        <td class="text-center">
+                            {{data.Size}}
+                        </td>
+                        <td class="text-center"> {{data.Unit}} </td>
+                        <td class="text-right"> {{data.UnitPrice | money}} </td>
+                        <td class="td-out-control">
+                            <div>
+                                <dx-number-box (onKeyUp)="onKeyUpOnTextBox($event, i)"
+                                    (onValueChanged)="onAmountChange($event, i)" class="control-in-grid"
+                                    [(value)]="data.Amount"> </dx-number-box>
+                            </div>
+                        </td>
+                        <td class="text-right"> {{data.TotalMoney | money}} </td>
+                        <td class="option-column"><i (click)="onClickRemoveItem(i)" class="fas fa-trash"></i> </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+            <div class="dis-flex-cen">
+                <div class="flex-grow"> </div>
+                <div class="total-money"> <span class="m-r-16">Tổng tiền: </span> <span class="font-bold">
+                        {{invoiceObj.TotalMoney | money}} </span> </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<app-loading *ngIf="isLoading"></app-loading>
+
+<app-popup-warning *ngIf="popupWarning.visible" [(visible)]="popupWarning.visible" [content]="popupWarning.content"
+    (closePopup)="closeWarningPopup()"></app-popup-warning>

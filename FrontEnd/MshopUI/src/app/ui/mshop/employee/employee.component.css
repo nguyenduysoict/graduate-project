@@ -1,0 +1,73 @@
+.employee-form{
+    position: relative;
+    margin: 8px;
+    height: 100%;
+}
+.tab-panel-content{
+  height: 100%;
+}
+.tab-panel{
+  height: 100% !important;
+}
+.employee-form-footer {
+    position: absolute;
+    height: 55px;
+    bottom: 1px;
+    width: calc(100% - 2px);
+    margin-left: 1px;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+  }
+
+  .basic-info-form, .contact-info-form, .document-info-form{
+    padding: 24px;
+  }
+
+
+  
+  .footer-btn {
+    margin-left: 8px;
+  }
+
+  .employee-picture-area{
+    width: 170px;
+    height: 170px;
+    border: 1px dashed#337ab7;
+    position: relative;
+    overflow: hidden;
+}
+
+.employee-picture{
+  width: 100%;
+}
+
+::ng-deep.choose-picture-btn{
+  position: absolute;
+  background-color: white !important;
+  opacity: 0.7;
+  bottom: 5px;
+  left: 50%;
+  margin-left: -50px;
+  width: 100px !important;
+  height: 28px;
+
+}
+.employee-pic-label{
+  padding: 64px 31px 0 120px;
+}
+
+::ng-deep.role-radio-btn .dx-item.dx-radiobutton:not(:first-child){
+  margin-left: 40px;
+}
+
+::ng-deep.choose-picture-btn:hover{
+  opacity: 1;
+}
+
+::ng-deep.choose-picture-btn>.dx-button-content{
+  padding: 0 !important;
+  font-weight: 600;
+}

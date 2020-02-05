@@ -1,0 +1,74 @@
+.goods-form {
+  height: 97%;
+}
+
+.goods-form-container {
+  position: relative;
+  height: calc(100% - 20px);
+  background: white;
+}
+.goods-form-content {
+  height: calc(100% - 10px);
+  overflow: auto;
+  padding: 0 16px 8px 16px;
+}
+
+.short-fields {
+  width: 400px;
+}
+
+.grid-2-s {
+  display: grid;
+  grid-template-columns: 150px calc(100% - 150px);
+  grid-row-gap: 8px;
+  margin: 8px 0;
+  align-items: center;
+}
+
+
+.goods-picture-area{
+    width: 170px;
+    height: 170px;
+    border: 1px dashed#337ab7;
+    position: relative;
+    overflow: hidden;
+}
+
+.goods-picture{
+  width: 100%;
+}
+
+::ng-deep.choose-picture-btn{
+  position: absolute;
+  background-color: white !important;
+  opacity: 0.7;
+  bottom: 5px;
+  left: 50%;
+  margin-left: -50px;
+  width: 100px !important;
+  height: 28px;
+
+}
+
+::ng-deep.choose-picture-btn:hover{
+  opacity: 1;
+}
+
+::ng-deep.choose-picture-btn>.dx-button-content{
+  padding: 0 !important;
+  font-weight: 600;
+}
+
+.goods-form-footer {
+  position: absolute;
+  height: 55px;
+  bottom: -45px;
+  width: 100%;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+}
+
+

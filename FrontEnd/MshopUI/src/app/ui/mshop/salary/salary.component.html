@@ -1,0 +1,177 @@
+<div>
+    <div class="settings-tab-panel">
+        <dx-tab-panel #tabPanel [dataSource]="settingTabTemplates" [selectedIndex]="0" class="tab-panel">
+
+            <div *dxTemplate="let company of 'working-day'">
+                <div class="working-day">
+                    <div class="popup-form-title">
+                        BẢNG CÔNG TRONG THÁNG
+                    </div>
+                    <dx-scheduler [dataSource]="workdays" (onOptionChanged)="changeMonth($event)" [views]='["month"]' currentView="month"
+                         [currentDate]="currentDate"  [height]="500"
+                         (onCellClick)="onClickCell($event)"
+                         >
+                         <dxi-resource
+                         fieldExpr="stateID"
+                         [allowMultiple]="false"
+                         [dataSource]="workTimeState" >
+
+                     </dxi-resource>
+
+                         <dxo-editing #editingOptions
+                         [allowAdding]="false"
+                         [allowDeleting]="false"
+                         [allowUpdating]="false"
+                         [allowResizing]="false"
+                         [allowDragging]="false"
+                     ></dxo-editing>
+                    </dx-scheduler>
+
+                    <div class="dis-flex-cen m-t-16">
+                        <div class="left-side-form">
+                            <div class="dis-flex-cen">
+                                <div class="input-label-180 font-bold">
+                                    Số ngày công:
+                                </div>
+                            </div>
+                            <div class="dis-flex-cen">
+                                <div class="input-label-180">
+
+                                </div>
+                                <div class="input-label-150">
+                                    Thực tế:
+                                </div>
+                                <div class="font-bold">
+                                    {{workdayAmount}}
+                                </div>
+
+                            </div>
+                            <div class="dis-flex-cen m-t-8">
+                                <div class="input-label-180">
+
+                                </div>
+                                <div class="input-label-180">
+                                    Số ngày đi làm đúng giờ:
+
+                                </div>
+                                <div class="font-bold">
+                                    {{intimeWorkdayAmount}}
+                                </div>
+                            </div>
+                            <div class="dis-flex-cen m-t-8">
+                                <div class="input-label-180">
+
+                                </div>
+                                <div class="input-label-150">
+                                    Số ngày đi làm muộn:
+                                </div>
+                                <div class="font-bold">
+                                    {{lateWorkdayAmount}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="right-side-form">
+                            <div class="dis-flex-cen">
+                                <div class="input-label-180 font-bold">
+                                    Số ngày nghỉ:
+                                </div>
+                            </div>
+                            <div class="dis-flex-cen">
+                                <div class="input-label-180">
+
+                                </div>
+                                <div class="input-label-150">
+                                    Tổng số:
+                                </div>
+                                <div class="font-bold">
+                                    3
+                                </div>
+
+                            </div>
+                            <div class="dis-flex-cen m-t-8">
+                                <div class="input-label-180">
+
+                                </div>
+                                <div class="input-label-180">
+                                    Có phép:
+
+                                </div>
+                                <div class="font-bold">
+                                    3
+                                </div>
+                            </div>
+                            <div class="dis-flex-cen m-t-8">
+                                <div class="input-label-180">
+
+                                </div>
+                                <div class="input-label-150">
+                                    Không phép:
+                                </div>
+                                <div class="font-bold">
+                                    0
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+            </div>
+            <div *dxTemplate="let company of 'salary-table'">
+                <div class="salary-table">
+                    <div class="dis-flex-cen m-t-24 m-b-16">
+                        <div class="left-60 dis-flex-cen">
+                            <div class="left-side-form dis-flex-cen">
+                                <div class="input-label-180">
+                                    Số ngày công thực tế: 
+                                </div>
+                                <div class="font-bold">
+                                    {{intimeWorkdayAmount}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dis-flex-cen m-t-24 m-b-16">
+                        <div class="left-60 dis-flex-cen">
+                            <div class="left-side-form dis-flex-cen">
+                                <div class="input-label-180">
+                                    Mức lương theo thỏa thuận:   
+                                </div>
+                                <div class="font-bold">
+                                    {{salaryInDeal | money}}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <nz-table #groupingTable [nzData]="salaryTable" nzBordered nzSize="small">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Số ngày công</th>
+                                <th colspan="2">Các khoản thu nhập</th>
+                                <th colspan="2">Các khoản khấu trừ</th>
+                                <th rowspan="2">Lương thực nhận</th>
+                            </tr>
+                            <tr>
+                                <th> Lương cơ bản </th>
+                                <th> Trợ cấp (Xăng xe)</th>
+                                <th>Thuế TNCN</th>
+                                <th>Bảo hiểm XH</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of groupingTable.data">
+                                <td class="text-center font-bold">{{data.workdayAmount}}</td>
+                                <td class="text-right">{{data.basicSalary | money}}</td>
+                                <td class="text-right">{{data.grant | money }}</td>
+                                <td class="text-right">{{data.personalIncomeTax | money}}</td>
+                                <td class="text-right">{{data.socialInsurance | money}}</td>
+                                <td class="text-right">{{data.realIncome | money }}</td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </div>
+            </div>
+        </dx-tab-panel>
+    </div>
+</div>

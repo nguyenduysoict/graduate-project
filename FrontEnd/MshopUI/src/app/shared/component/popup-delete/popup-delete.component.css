@@ -1,0 +1,7 @@
+::ng-deep.popup-delete .dx-popup-title{
+    color: crimson;
+}
+
+.popup-del-content{
+    margin: 8px;
+}

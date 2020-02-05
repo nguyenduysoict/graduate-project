@@ -1,0 +1,248 @@
+<!-- <div *ngIf="!isLoading" class="sale-report-content">
+    <div class="grid-name-panel">
+        <button nz-button id="btn-report" nzType="primary" (click)="showChooseReportPopup()"
+            class="select-report-dropdown">
+            Chọn loại báo cáo
+        </button>
+
+        <div class="grid-name">
+            {{reportName}}
+        </div>
+        <div>
+            Cửa hàng: <span class="shop-name"> {{shopName}} </span>
+        </div>
+    </div>
+
+    <div class="filter-by-date-panel dis-flex-cen">
+        <div class="filter-item">
+            <button nz-button nz-dropdown [nzDropdownMenu]="timeRange" class="header-item period-btn">
+                {{selectedPeriod}}
+                <i nz-icon nzType="down"></i>
+            </button>
+            <nz-dropdown-menu #timeRange="nzDropdownMenu">
+                <ul nz-menu class="dropdown-menu">
+                    <li nz-menu-item (click)="onChangePeriod(item)" *ngFor="let item of periods">
+                        {{item.periodName}}
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+        </div>
+        <div class="filter-item">
+            Từ ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" [(value)]="startFilterDate" displayFormat="dd/MM/yyyy" placeholder="dd/MM/yyyy">
+            </dx-date-box>
+        </div>
+        <div class="filter-item">
+            Đến ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" [(value)]="endFilterDate" displayFormat="dd/MM/yyyy" placeholder="dd/MM/yyyy">
+            </dx-date-box>
+        </div>
+        <div class="filter-item">
+            <button nz-button nzType="primary" (click)="getDataByQueryCondition()">
+                <i nz-icon nzType="filter" nzTheme="outline"></i>
+                <span> Lấy dữ liệu </span>
+            </button>
+        </div>
+    </div>
+
+
+    <nz-table *ngIf="isSaleByDay" #saleByDayTable [nzData]="saleByDayData" nzBordered nzSize="small">
+        <thead>
+            <tr>
+                <th rowspan="2">Ngày</th>
+                <th rowspan="2">Doanh thu</th>
+                <th colspan="2">Khách hàng thanh toán</th>
+                <th rowspan="2">Thực thu  </th>
+            </tr>
+            <tr>
+                <th> Tiền mặt </th>
+                <th> Thẻ </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of saleByDayTable.data">
+                <td class="text-center">{{ data.InvoiceDate | date: 'dd/MM/yyyy' }}</td>
+                <td class="text-right no-cell">{{ data.TotalMoney | money }}</td>
+                <td class="text-right">{{ data.Cash | money }}</td>
+                <td class="text-right">{{ data.Card | money }}</td>
+                <td class="text-right">{{ data.Cash | money }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+    <nz-table *ngIf="isIncomeByItem" #incomeByItemTable [nzData]="incomeByItemData" nzBordered nzSize="small">
+        <thead>
+            <tr>
+                <th>Mã SKU</th>
+                <th>Tên hàng hóa</th>
+                <th>Màu sắc</th>
+                <th>Size</th>
+                <th>Đơn vị tính</th>
+                <th>Số lượng bán</th>
+                <th>Đơn giá</th>
+                <th>Doanh thu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of incomeByItemTable.data">
+                <td>{{ data.SKUCode }}</td>
+                <td class="no-cell">{{ data.ItemName }}</td>
+                <td>{{ data.Color }}</td>
+                <td>{{ data.Size }}</td>
+                <td>{{ data.Unit }}</td>
+                <td class="text-right">{{ data.Amount }}</td>
+                <td class="text-right">{{ data.UnitPrice | money}}</td>
+                <td class="text-right">{{ data.TotalMoney | money}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+    <nz-table *ngIf="isIncomeByGroupItem" #incomeByGroupItemTable [nzData]="incomeByGroupItemData" nzBordered nzSize="small">
+        <thead>
+            <tr>
+                <th>Mã nhóm hàng hóa</th>
+                <th>Nhóm hàng hóa</th>
+                <th>Doanh thu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of incomeByGroupItemTable.data">
+                <td>{{ data.ItemGroupCode }}</td>
+                <td class="no-cell">{{ data.ItemGroupName }}</td>
+                <td class="text-right">{{ data.TotalMoney | money }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+    <nz-table *ngIf="isIncomeByStaff" #incomeByStaffTable [nzData]="incomeByStaffData" nzBordered nzSize="small">
+        <thead>
+            <tr>
+                <th>Mã nhân viên</th>
+                <th>Tên Nhân viên</th>
+                <th>Doanh thu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of incomeByStaffTable.data">
+                <td>{{ data.StaffCode }}</td>
+                <td class="no-cell">{{ data.StaffName }}</td>
+                <td class="text-right">{{ data.TotalMoney | money}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+    <nz-table *ngIf="isInvoiceAndItem" #invoiceAndItemTable [nzData]="invoiceAndItemData" nzBordered nzSize="small">
+        <thead>
+            <tr>
+                <th>Ngày</th>
+                <th>Giờ</th>
+                <th>Số hóa đơn </th>
+                <th>Mã SKU</th>
+                <th>Tên hàng hóa</th>
+                <th>Đơn vị tính</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Doanh thu</th>
+                <th>Khách hàng</th>
+                <th>Số điện thoại</th>
+                <th>Nhân viên</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of invoiceAndItemTable.data">
+                <td>{{ data.InvoiceDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ data.InvoiceDate | date: 'hh:mm'}}</td>
+                <td>{{ data.InvoiceNo }}</td>
+                <td>{{ data.SKUCode }}</td>
+                <td class="no-cell">{{ data.ItemName }}</td>
+                <td>{{ data.Unit }}</td>
+                <td class="text-right">{{ data.Amount }}</td>
+                <td class="text-right">{{ data.UnitPrice }}</td>
+                <td class="text-right">{{ data.TotalMoney }}</td>
+                <td class="text-right">{{ data.CustomerName }}</td>
+                <td class="text-right">{{ data.CustomerPhone }}</td>
+                <td class="text-right">{{ data.StaffName }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>
+
+<dx-popup [showTitle]="true" [width]="600" [height]="'auto'" title="Chọn loại báo cáo" [dragEnabled]="true"
+    [(visible)]="isShowPopup">
+
+    <div class="inner-popup-content">
+        <div class="dis-flex-cen grid-2">
+            <div> Báo cáo </div>
+            <div>
+                <dx-select-box [(value)]="currentReportType" searchEnabled="true"
+                    (onValueChanged)="onChangeReportType($event)" [dataSource]="reportTypeList" valueExpr="Type"
+                    displayExpr="Name" placeholder="Chọn loại báo cáo">
+                </dx-select-box>
+            </div>
+        </div>
+        <div>
+            <div class="dis-flex-cen grid-2">
+                <div>Kỳ báo cáo </div>
+                <div class="period-select-box">
+                    <dx-select-box [(value)]="selectedPeriodId" searchEnabled="true"
+                        (onValueChanged)="onChangePeriod($event)" [dataSource]="periods" valueExpr="id"
+                        displayExpr="periodName" placeholder="Kỳ báo cáo">
+                    </dx-select-box>
+                </div>
+            </div>
+            <div class="dis-flex-cen grid grid-2">
+                <div> Từ ngày </div>
+                <div class="dis-flex-cen">
+                    <dx-date-box type="date" [(value)]="startFilterDate" displayFormat="dd/MM/yyyy"
+                        placeholder="dd/MM/yyyy"> </dx-date-box> <span class="text-with-space"> đến ngày </span>
+                    <dx-date-box type="date" [(value)]="endFilterDate" displayFormat="dd/MM/yyyy"
+                        placeholder="dd/MM/yyyy"></dx-date-box>
+                </div>
+            </div>
+
+            <div *ngIf="currentReportType == 2" class="dis-flex-cen grid-2">
+                <div> Nhân viên </div>
+                <div>
+                    <dx-select-box [(value)]="currentSelectedStaff" searchEnabled="true"
+                        (onValueChanged)="onSelectStaff($event)" [dataSource]="staffList" valueExpr="StaffCode"
+                        displayExpr="StaffName" placeholder="">
+                    </dx-select-box>
+                </div>
+            </div>
+            <div class="dis-flex-cen grid-2">
+                <div> Cửa hàng </div>
+                <div>
+                    <dx-select-box [(value)]="currentSelectedShop" searchEnabled="true" [dataSource]="shopList"
+                        valueExpr="ShopID" displayExpr="ShopName" placeholder="">
+                    </dx-select-box>
+                </div>
+            </div>
+            <div *ngIf="currentReportType == 4" class="dis-flex-cen grid-2">
+                <div>Thống kê theo</div>
+                <div>
+                    <dx-select-box *ngIf="currentReportType == 4" [(value)]="currentOrderByItem" searchEnabled="true"
+                        [dataSource]="statisticsByItem" valueExpr="id" displayExpr="orderBy" 
+                        placeholder="Thống kê theo">
+                    </dx-select-box>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popup-footer">
+        <div class="flex-grow">
+
+        </div>
+        <div class="popup-footer-btn">
+            <button nz-button class="btn-on-popup" nzType="primary" (click)=getDataByQueryCondition()> Đồng ý </button>
+            <button nz-button nzType="default" (click)="onCancel()"> Hủy </button>
+        </div>
+    </div>
+</dx-popup> -->

@@ -1,0 +1,21 @@
+<dx-popup [showTitle]="true" [width]="500" [height]="'auto'" [title]="title" (onHiding)="onCancel($event)" [dragEnabled]="true"
+ [(visible)]="visible" class="popup-delete">
+    <div class="inner-popup-content">
+        <div class="font-16 popup-del-content" [innerHTML]="content">
+        </div>
+    </div>
+    <div class="popup-footer">
+        <div class="flex-grow"></div>
+        <div class="popup-footer-btn">
+            <div class="footer-btn">
+                <dx-button stylingMode="text" text="Hủy" type="normal" [width]="70" (onClick)="onCancel($event)">
+                </dx-button>
+            </div>
+            <div class="footer-btn">
+                <dx-button stylingMode="contained" text="Đồng ý" type="danger" [width]="90"
+                    (onClick)="onConfirm($event)" [useSubmitBehavior]="true">
+                </dx-button>
+            </div>
+        </div>
+    </div>
+</dx-popup>

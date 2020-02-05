@@ -1,0 +1,130 @@
+<div>
+    <div class="settings-tab-panel">
+        <dx-tab-panel #tabPanel [dataSource]="settingTabTemplates" [selectedIndex]="0" class="tab-panel">
+
+            <div *dxTemplate="let company of 'common-setting'">
+                <div class="common-setting-form">
+                    <div class="popup-form-title">
+                        <i nz-icon nzType="money-collect"></i> <span class="section-name"> THÔNG TIN LƯƠNG </span>
+                    </div>
+                    <div class="dis-flex-cen">
+                        <div class="input-label-180 font-bold">
+                            Giờ làm việc:
+                        </div>
+                    </div>
+                    <div class="dis-flex-cen">
+                        <div class="input-label-180">
+
+                        </div>
+                        <div class="input-label-120">
+                            Ca sáng từ:
+                        </div>
+                        <div>
+                            <dx-date-box type="time" displayFormat="HH:mm" [(value)]="settingObj.MorningShiftStart" placeholder="HH:mm"></dx-date-box>
+                        </div>
+                        <div class="width-100">
+                            đến
+                        </div>
+                        <div class="">
+                            <dx-date-box type="time" displayFormat="HH:mm" [(value)]="settingObj.MorningShiftEnd" placeholder="HH:mm"></dx-date-box>
+                        </div>
+                    </div>
+                    <div class="dis-flex-cen m-t-8">
+                        <div class="input-label-180">
+
+                        </div>
+                        <div class="input-label-120">
+                            Ca chiều từ:
+                        </div>
+                        <div>
+                            <dx-date-box type="time" displayFormat="HH:mm" [(value)]="settingObj.AfternoonShiftStart" placeholder="HH:mm"></dx-date-box>
+                        </div>
+                        <div class="width-100">
+                            đến
+                        </div>
+                        <div class="">
+                            <dx-date-box type="time" displayFormat="HH:mm" [(value)]="settingObj.AfternoonShiftEnd" placeholder="HH:mm"></dx-date-box>
+                        </div>
+                    </div>
+                    <div class="dis-flex-cen m-t-8">
+                        <div class="input-label-180">
+
+                        </div>
+                        <div class="input-label-120">
+                            Ca tối từ:
+                        </div>
+                        <div>
+                            <dx-date-box type="time" displayFormat="HH:mm" [(value)]="settingObj.NightShiftStart" placeholder="HH:mm"></dx-date-box>
+                        </div>
+                        <div class="width-100">
+                            đến
+                        </div>
+                        <div class="">
+                            <dx-date-box type="time" displayFormat="HH:mm" [(value)]="settingObj.NightShiftEnd" placeholder="HH:mm"></dx-date-box>
+                        </div>
+                    </div>
+                    <div class="dis-flex-cen m-t-24">
+                        <div class="input-label-180 font-bold">
+                            Ngày làm việc từ
+                        </div>
+                        <div>
+                            <dx-select-box [dataSource]="dayInWeek" [(value)]="settingObj.WorkingDayStart" placeholder="Chọn ngày" valueExpr="id"
+                                displayExpr="day">
+                            </dx-select-box>
+                        </div>
+                        <div class="width-100">
+                            đến
+                        </div>
+                        <div>
+                            <dx-select-box [dataSource]="dayInWeek" [(value)]="settingObj.WorkingDayEnd" placeholder="Chọn ngày" valueExpr="id"
+                                displayExpr="day">
+                            </dx-select-box>
+                        </div>
+                    </div>
+                    <div class="dis-flex m-t-24">
+                        <div class="left-60 dis-flex">
+                            <div class="left-side-form dis-flex-cen">
+                                <div class="input-label-180 font-bold">
+                                    Ngày chốt công hàng tháng
+                                </div>
+                                <div>
+                                    <dx-number-box [(value)]="settingObj.SumUpDay"></dx-number-box>
+                                </div>
+                            </div>
+                            <div class="right-side-form dis-flex-cen">
+                                <div class="input-label-180 font-bold">
+                                    Số ngày công trên tháng
+                                </div>
+                                <div>
+                                    <dx-number-box [(value)]="settingObj.WorkingDayAmount"></dx-number-box>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right-40 dis-flex-cen">
+                            <div class="input-label-120 font-bold">
+                                Ngày trả lương
+                            </div>
+                            <div>
+                                <dx-number-box [(value)]="settingObj.SalaryDay"></dx-number-box>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div *dxTemplate="let company of 'salary-setting'">
+                <div class="salary-setting-form">
+
+                </div>
+            </div>
+        </dx-tab-panel>
+        <div class="setting-form-footer">
+            <div class="footer-btn">
+                <dx-button stylingMode="contained" text="Lưu" icon="fa fa-save" type="default" [width]="120"
+                    (onClick)="onSave($event)">
+                </dx-button>
+            </div>
+        </div>
+    </div>
+</div>

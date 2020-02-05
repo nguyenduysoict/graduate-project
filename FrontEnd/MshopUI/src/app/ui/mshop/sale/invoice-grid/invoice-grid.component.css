@@ -1,0 +1,13 @@
+.invoice-container{
+    padding: 8px;
+    background-color: white;;
+}
+
+.grid-master{
+    height: 395px;
+    margin-bottom: 30px;
+}
+
+.grid-detail{
+    min-height: 170px;
+}

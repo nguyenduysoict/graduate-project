@@ -1,0 +1,32 @@
+    
+.invoice-container{
+    padding: 16px;
+    background-color: white;;
+}
+.data-table{
+    margin-top: 8px;
+}
+
+.left-side-form-input{
+    width: 40%;
+}
+
+.right-side-form-input{
+    width: 60%;
+    padding-left: 16px;
+}
+
+
+
+::ng-deep .items-grid.ant-table-empty .ant-table-body{
+    overflow-y:scroll !important;
+}
+
+::ng-deep.role-radio-btn .dx-item.dx-radiobutton:not(:first-child){
+    margin-left: 40px;
+  }
+
+  
+.total-money{
+    width: 270px;
+}

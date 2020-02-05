@@ -1,0 +1,450 @@
+.dis-flex{
+    display: flex;
+}
+
+.flex-grow{
+    flex-grow: 1;
+}
+
+.dis-flex-cen{
+    display: flex;
+    align-items: center;
+}
+
+.require{
+    color: red;
+    margin-left: 3px;
+}
+
+.s-i-text{
+    font-size: 13px;
+    font-style: italic;
+}
+
+.s-date-input{ 
+    width: 100px;
+    margin-right: 6px;
+}
+
+.font-bold{
+    font-weight: 600;
+}
+
+.padding-8{
+    padding: 8px;
+}
+.padding-16{
+    padding: 16px;
+}
+
+.padding-0-16{
+    padding: 0 16px;
+}
+
+.m-l-8{
+    margin-left: 8px;
+}
+
+.m-r-16{
+    margin-right: 16px;;
+}
+
+.m-t-8{
+    margin-top:8px;
+}
+
+.m-t-16{
+    margin-top: 16px;
+}
+
+.m-b-16{
+    margin-bottom: 16px;
+} 
+
+.m-t-24{
+    margin-top: 24px;
+}
+
+.inline-grid{
+    margin: 0 10px !important;
+}
+
+.input-label-120{
+    width: 120px;
+    margin-right: 16px;
+}
+
+.input-label-150{
+    width: 150px;
+    margin-right: 16px;
+}
+
+.input-label-180{
+    width: 180px;
+    margin-right: 16px;
+}
+
+.width-100{
+    width: 100px;
+    text-align: center;
+}
+
+.large-grid .ant-table-body{
+    max-height: 586px !important;
+}
+
+/* css cho phần grid master và detail */
+.grid-master-filter .ant-table-body{
+    max-height: 270px !important;
+}
+.grid-detail-filter .ant-table-body{
+    max-height: 170px !important;
+}
+
+.grid-master .ant-table-body{
+    max-height: 400px !important;
+    overflow: auto;
+}
+
+.grid-detail .ant-table-body{
+    max-height: 170px !important;
+    overflow: auto;
+}
+
+.ant-table-wrapper .ant-table-content .ant-table-body tr.ant-table-row, th, td{
+    border-color: #e0e0e0 !important;
+}
+
+
+.detail-tab-name{
+    background: white;
+    margin-bottom: 1px;
+}
+.detail-text{
+    padding: 8px;
+    width: 90px;
+    text-align: center;
+    background-color: white;
+    font-weight: 600;
+    font-size: 15px;
+    border-bottom: 2px solid #026b97;
+}
+
+/* css cho phần dialog thêm sửa nhân bản */
+
+.long-field-grid{
+    display: grid;
+    grid-template-columns: 100px calc(100% - 108px);
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+    padding-right: 40px;
+}
+
+.short-field-grid{
+    display: grid;
+    grid-template-columns: 100px calc(100% - 107px);
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;    
+}
+
+.form-grid-label{
+    display: flex;
+    align-items: center;
+}
+
+.left-form{
+    width: calc(100% - 250px);
+}
+
+.right-form{
+    width: 250px;
+}
+
+
+/* css cho toolbar */
+
+.toolbars{
+    display: flex;
+    align-items: center;
+    background-color: #026b97;
+}
+
+    .toolbar-btn{
+        display: flex;
+        align-items: center;
+        padding: 7px 12px;
+        background-color: #026b97;
+        color: white;
+        border-right: 1px solid #e0e0e0;
+    }
+
+    .toolbar-btn-icon{
+        margin-right:8px;
+    }
+
+    .toolbar-btn:hover{
+        cursor: pointer;
+        background-color: #5f7bc7;
+    }
+
+.filter-by-date-panel{
+    background-color: #fff;
+    padding: 5px 0;
+
+}
+
+.filter-item{
+    margin: 8px;
+}
+
+
+/* style cho popup */
+
+.dx-toolbar.dx-widget.dx-visibility-change-handler.dx-collection.dx-popup-title{
+    background-color: #f0f2f5;
+}
+
+.dx-popup-title.dx-toolbar{
+    padding: 3px 20px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.dx-popup-title.dx-toolbar .dx-toolbar-item:last-child{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+.dx-popup-content{
+    padding: 0;
+}
+
+.popup-content{
+    padding: 8px 16px;
+}
+
+.popup-form-title{
+    opacity: 0.7;
+    font-weight: bold;
+    font-size: 17px;
+    padding: 16px 0;
+}
+
+.inner-popup-content{
+    padding: 16px;
+}
+
+.popup-footer{
+    padding: 16px;
+    background-color: #fafafa;
+    border-top: 1px solid #e0e0e0;
+    position: relative;
+    display: flex;
+}
+
+.popup-footer-btn{
+    display: flex;
+    align-items: center;
+}
+
+.agree-btn{
+    margin-right: 8px;
+}
+
+.btn-on-popup{
+    margin-right: 8px;
+}
+
+/* style cho form control */
+.dx-field-label{
+    width: none;
+}
+
+.grid-2{
+    display: grid;
+    grid-template-columns: 100px calc(100% - 100px);
+    grid-row-gap: 8px;
+    margin: 8px 0;
+    align-items: center;
+}
+
+.grid-2-150{
+    display: grid;
+    grid-template-columns: 150px calc(100% - 150px);
+    grid-row-gap: 8px;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.dx-item-content.dx-multiview-item-content{
+    background-color: white;
+}
+
+.left-60{
+    width: 60%;
+    margin-right: 8px;
+}
+
+.right-40{
+    width: 40%;
+    margin-left: 8px;
+}
+
+.left-side-form{
+    width: 50%;
+    margin-right: 8px;
+  }
+
+  .right-side-form{
+    width: 50%;
+    margin-left: 8px;
+  }
+
+.text-with-space{
+    padding: 0 8px;
+}
+
+.grid-wrapper{
+    padding: 0 0 8px 0;
+    background: #ffffff;
+}
+
+.ant-table-thead>tr>th {
+    font-weight: 700!important;
+    text-align: center;
+    background-color: rgb(240,240,240) !important;
+}
+
+.ant-table-tbody>tr:nth-child(even){
+    background-color: #f5f5f5;
+}
+
+.select-report-dropdown{
+    position: relative;
+}
+
+.dropdown-menu{
+    max-height: 200px;
+    overflow: auto;
+}
+
+.dis-none{
+    display: none;
+}
+
+.footer-btn {
+    margin-left: 8px;
+  }
+
+
+.hidden-ele{
+    visibility: hidden;
+}
+
+.ant-table-small>.ant-table-content>.ant-table-body{
+    margin: 0 0;
+}
+
+.ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th{
+    background-color: #fafafa;
+}
+
+.ant-table-tbody{
+    background-color: white;
+}
+
+.pos-ab{
+    position: absolute;
+}
+
+.cursor-pointer:hover{
+    cursor: pointer;
+}
+
+.option-column{
+    text-align: center;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.text-left{
+    text-align: left;
+}
+
+
+.option-icon{
+    margin-right: 16px;
+}
+
+.ant-table-tbody>.ant-table-row:hover{
+    cursor: pointer;
+}
+
+.option-icon.fas:hover{
+    cursor: pointer;
+}
+
+.option-icon.fa-pencil-alt:hover{
+    color: dodgerblue;
+}
+
+.option-icon.fa-trash:hover{
+    color: crimson;
+}
+
+.font-13{
+    font-size: 13px !important;
+}
+
+.font-14{
+    font-size: 14px !important;
+}
+
+.font-15{
+    font-size: 15px !important;
+}
+
+.font-16{
+    font-size: 16px !important;
+}
+
+.font-17{
+    font-size: 17px !important;
+}
+.w-100{
+    width: 100%;
+}
+.font-18{
+    font-size: 18px !important;
+}
+.control-in-grid{
+    height: 33px;
+    border: none !important;
+}
+
+.table-with-control>tr>td.td-out-control{
+    padding: 0!important;
+}
+
+.margin-0{
+    margin:0;
+}
+
+.no-cell{
+    color: #346c98;
+}
+
+.no-cell:hover{
+    text-decoration: underline;
+}
+
+.selected-row{
+    background-color: #e6f7ff !important;
+}

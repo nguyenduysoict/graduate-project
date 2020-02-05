@@ -1,0 +1,147 @@
+<div *ngIf="!isLoading">
+    <div class="overview-board-item">
+        <div class="overview-grid-item left-panel-board">
+            <div class="report-item-header dis-flex-cen diagram-panel-item">
+                <div class="flex-grow font-bold font-15"></div>
+                <div>
+                    <button nz-button nz-dropdown [nzDropdownMenu]="period1" class="header-item period-btn">
+                        {{selectedPeriod1}}
+                        <i nz-icon nzType="down"></i>
+                    </button>
+                    <nz-dropdown-menu #period1="nzDropdownMenu">
+                        <ul nz-menu class="dropdown-menu">
+                            <li nz-menu-item (click)="onChangePeriod1(item)" *ngFor="let item of periods">
+                                {{item.periodName}}
+                            </li>
+                        </ul>
+                    </nz-dropdown-menu>
+                </div>
+                <div class="refresh-icon cursor-pointer" (click)="getIncomeData()">
+                    <i nz-icon nzType="sync"></i>
+                </div>
+            </div>
+            <div class="dis-flex-cen report-statistic">
+
+            </div>
+            <div>
+                <dx-chart class="chart" [dataSource]="incomeData" (onPointClick)="onPointClick($event)" title="Doanh thu, chi phí, lợi nhuận">
+                    <dxi-series valueField="income" name="Doanh thu"></dxi-series>
+                    <dxi-series valueField="outcome" name="Chi phí"></dxi-series>
+                    <dxi-series valueField="profits" name="Lợi nhuận"></dxi-series>
+                    <dxo-common-series-settings argumentField="state" type="bar" hoverMode="allArgumentPoints"
+                        selectionMode="allArgumentPoints">
+                        <dxo-label [visible]="true" [format]="{
+                                    type: 'fixedPoint',
+                                    precision: '0'
+                                }">
+                        </dxo-label>
+                    </dxo-common-series-settings>
+                    <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
+                    </dxo-legend>
+                </dx-chart>
+            </div>
+        </div>
+        <div class="overview-grid-item right-panel-board">
+            <div class="dis-flex-cen report-item-header diagram-panel-item">
+                <div class="flex-grow font-bold font-15"></div>
+                <div>
+                    <button nz-button nz-dropdown [nzDropdownMenu]="period2" class="header-item period-btn">
+                        {{selectedPeriod2}}
+                        <i nz-icon nzType="down"></i>
+                    </button>
+                    <nz-dropdown-menu #period2="nzDropdownMenu">
+                        <ul nz-menu class="dropdown-menu">
+                            <li nz-menu-item (click)="onChangePeriod2(item)" *ngFor="let item of periods">
+                                {{item.periodName}}
+                            </li>
+                        </ul>
+                    </nz-dropdown-menu>
+                </div>
+                <div class="refresh-icon cursor-pointer" (click)="getIncomeDataByDay()">
+                    <i nz-icon nzType="sync"></i>
+                </div>
+            </div>
+            <div class="dis-flex-cen report-statistic">
+            </div>
+            <div>
+                <dx-chart class="chart" [dataSource]="incomeDataByDay" title="Tình hình doanh thu theo thời gian">
+                    <dxi-series argumentField="day"></dxi-series>
+                    <dxo-argument-axis>
+                    </dxo-argument-axis>
+                    <dxo-legend [visible]="false"></dxo-legend>
+                </dx-chart>
+            </div>
+        </div>
+    </div>
+
+    <div class="overview-board-item">
+        <div class="overview-grid-item left-panel-board">
+            <div class="report-item-header dis-flex-cen diagram-panel-item">
+                <div class="flex-grow font-bold font-15">Tỉ trọng doanh thu hàng hóa</div>
+                <div>
+                    <button nz-button nz-dropdown [nzDropdownMenu]="period3" class="header-item period-btn">
+                        {{selectedPeriod3}}
+                        <i nz-icon nzType="down"></i>
+                    </button>
+                    <nz-dropdown-menu #period3="nzDropdownMenu">
+                        <ul nz-menu class="dropdown-menu">
+                            <li nz-menu-item (click)="onChangePeriod3(item)" *ngFor="let item of periods">
+                                {{item.periodName}}
+                            </li>
+                        </ul>
+                    </nz-dropdown-menu>
+                </div>
+                <div class="refresh-icon cursor-pointer" (click)="getIncomeByItemAmount()">
+                    <i nz-icon nzType="sync"></i>
+                </div>
+            </div>
+            <dx-pie-chart class="pie-chart" title="Tỉ trọng doanh số" palette="ocean" 
+            [customizePoint]="customizePoint" type="doughnut"
+            [dataSource]="incomeByItemAmount" (onPointClick)="pointClickHandler($event)"
+            (onLegendClick)="legendClickHandler($event)">
+            <dxi-series argumentField="ItemName" valueField="Amount">
+                <dxo-label [visible]="true">
+                    <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+                </dxo-label>
+            </dxi-series>
+            <dxo-size [width]="500"></dxo-size>
+        </dx-pie-chart>
+         
+        </div>
+        <div class="overview-grid-item right-panel-board">
+            <div class="report-item-header dis-flex-cen diagram-panel-item">
+                <div class="flex-grow font-bold font-15">Tỉ trọng doanh số theo hàng hóa</div>
+                <div>
+                    <button nz-button nz-dropdown [nzDropdownMenu]="period4" class="header-item period-btn">
+                        {{selectedPeriod4}}
+                        <i nz-icon nzType="down"></i>
+                    </button>
+                    <nz-dropdown-menu #period4="nzDropdownMenu">
+                        <ul nz-menu class="dropdown-menu">
+                            <li nz-menu-item (click)="onChangePeriod4(item)" *ngFor="let item of periods">
+                                {{item.periodName}}
+                            </li>
+                        </ul>
+                    </nz-dropdown-menu>
+                </div>
+                <div class="refresh-icon cursor-pointer" (click)="getIncomeByItemValue()">
+                    <i nz-icon nzType="sync"></i>
+                </div>
+            </div>
+            <div class="div-outer-pie-chart">
+                <dx-pie-chart class="pie-chart" title="Tỉ trọng doanh thu" palette="material" [dataSource]="incomeByItemValue"
+                (onPointClick)="pointClickHandler($event)" (onLegendClick)="legendClickHandler($event)">
+                <dxi-series argumentField="ItemName" valueField="Percentage">
+                    <dxo-label [visible]="true" [customizeText]="123">
+                        <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+                    </dxo-label>
+                </dxi-series>
+                <dxo-size [width]="500"></dxo-size>
+            </dx-pie-chart>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>

@@ -1,0 +1,266 @@
+<div *ngIf="!isLoading">
+    <div class="toolbars">
+        <div class="toolbar-btn add-receipt-btn" nz-dropdown [nzDropdownMenu]="addNewReceipt">
+            <div class="toolbar-btn-icon"> <i class="fas fa-plus"></i> </div> <span class="toolbar-btn-text"> Thêm mới
+            </span>
+        </div>
+        <nz-dropdown-menu #addNewReceipt="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item class="dropdown-receipt-option" (click)="showReceiptPopup(0)"> Phiếu thu </li>
+                <li nz-menu-item class="dropdown-receipt-option" (click)="showReceiptPopup(1)"> Phiếu chi </li>
+            </ul>
+        </nz-dropdown-menu>
+        <div class="toolbar-btn" (click)="showReceiptPopup(3)">
+            <div class="toolbar-btn-icon"> <i class="fas fa-copy"></i> </div> <span class="toolbar-btn-text"> Nhân bản
+            </span>
+        </div>
+        <div class="toolbar-btn" (click)="showReceiptPopup(2)">
+            <div class="toolbar-btn-icon"> <i class="fas fa-pencil-alt"></i> </div> <span class="toolbar-btn-text"> Sửa
+            </span>
+        </div>
+        <div class="toolbar-btn" (click)="showReceiptPopup(4)">
+            <div class="toolbar-btn-icon"> <i class="fas fa-trash"></i> </div> <span class="toolbar-btn-text"> Xóa
+            </span>
+        </div>
+        <div class="toolbar-btn" (click)="getReceipts()">
+            <div class="toolbar-btn-icon"> <i class="fas fa-sync-alt"></i> </div> <span class="toolbar-btn-text"> Nạp
+            </span>
+        </div>
+    </div>
+    <div class="filter-by-date-panel dis-flex-cen">
+        <div class="filter-item">
+            <button nz-button nz-dropdown [nzDropdownMenu]="timeRange" class="header-item">
+                {{selectedPeriod}}
+                <i nz-icon nzType="down"></i>
+            </button>
+            <nz-dropdown-menu #timeRange="nzDropdownMenu">
+                <ul nz-menu class="dropdown-menu">
+                    <li nz-menu-item (click)="onChangePeriod(item)" *ngFor="let item of periods">
+                        {{item.periodName}}
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+        </div>
+        <div class="filter-item">
+            Từ ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" displayFormat="dd/MM/yyyy" [(value)]="startFilterDate" placeholder="dd/MM/yyyy"></dx-date-box>
+        </div>
+        <div class="filter-item">
+            Đến ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" displayFormat="dd/MM/yyyy" [(value)]="endFilterDate" placeholder="dd/MM/yyyy"></dx-date-box>
+        </div>
+        <div class="filter-item">
+            <button nz-button nzType="primary" (click)="getReceipts()">
+                <i nz-icon nzType="filter" nzTheme="outline"></i>
+                <span> Lấy dữ liệu </span>
+            </button>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="">
+            <nz-table class="grid-master-filter" #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small"
+                [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig">
+                <thead>
+                    <tr>
+                        <th>Ngày </th>
+                        <th>Số chứng từ</th>
+                        <th>Loại chứng từ</th>
+                        <th>Tổng tiền</th>
+                        <th>Đối tượng nộp/nhận</th>
+                        <th>Lý do</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr #masterRow [class.selected-row]="data.IsSelected" *ngFor="let data of groupingTable.data; let i = index" (click)="onSelectMaster(data.ReceiptID, i)">
+                        <td class="text-center">{{ data.ReceiptDate | date: 'dd/MM/yyyy' }}</td>
+                        <td class="text-center no-cell" (click)="showReceiptPopup(2)">{{ data.ReceiptNo }}</td>
+                        <td>{{ data.ReceiptType == 1 ? 'Phiếu thu' : 'Phiếu chi'}}</td>
+                        <td>{{ data.TotalMoney }}</td>
+                        <td>{{ data.AccountObjectName }}</td>
+                        <td>{{ data.ReceiptReason }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+        <div class="detail-tab-name">
+            <div class="detail-text">
+                Chi tiết
+            </div>
+        </div>
+        <div>
+            <nz-table #detailTable class="grid-detail grid-detail-filter" [nzData]="gridDetailData" [nzShowPagination]="false" nzBordered
+                nzSize="small" [nzWidthConfig]="widthGridDetailConfig" [nzScroll]="scrollDetailConfig">
+                <thead>
+                    <tr>
+                        <th>Diễn giải </th>
+                        <th>Số tiền</th>
+                        <th>Mục thu/chi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of detailTable.data">
+                        <td>{{ data.Description }}</td>
+                        <td>{{ data.Money }}</td>
+                        <td>{{ data.ReceiptCategory }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
+
+<dx-popup class="popup" [width]="960" [height]="600" [showTitle]="true" [title]="popupTitle" [dragEnabled]="false"
+   [(visible)]="isShowPopup">
+    <div *dxTemplate="let data of 'content'">
+        <div class="toolbars">
+            <div class="toolbar-btn" (click)="showReceiptPopup(3)">
+                <div class="toolbar-btn-icon"> <i class="fas fa-copy"></i> </div> <span class="toolbar-btn-text"> Nhân
+                    bản
+                </span>
+            </div>
+            <div class="toolbar-btn" (click)="onSave()">
+                <div class="toolbar-btn-icon"> <i class="fas fa-save"></i> </div> <span class="toolbar-btn-text"> Lưu
+                </span>
+            </div>
+            <div class="toolbar-btn" (click)="onClickDeleteReceipt()">
+                <div class="toolbar-btn-icon"> <i class="fas fa-trash"></i> </div> <span class="toolbar-btn-text"> Xóa
+                </span>
+            </div>
+        </div>
+        <div class="popup-content">
+            <div>
+                <div class="general-info-form dis-flex">
+                    <div class="left-form">
+                        <div class="popup-form-title">THÔNG TIN CHUNG</div>
+                        <div class="m-r-16">
+                            <div class="dis-flex-cen">
+                                <div class="left-60">
+                                    <div class="grid-2 margin-0">
+                                        <div> {{isInReceipt ? "Người nộp" : "Người nhận"}} </div>
+                                        <div>
+                                            <dx-text-box [(value)]="receiptObj.AccountObjectName"></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-40">
+                                    <div class="grid-2 margin-0">
+                                        <div>SĐT</div>
+                                        <div>
+                                            <dx-text-box [(value)]="receiptObj.AccountObjectPhone"></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-grid-label"> Địa chỉ </div>
+                                <div>
+                                    <dx-text-box [(value)]="receiptObj.Address"> </dx-text-box>
+                                </div>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-grid-label"> {{isInReceipt ? "Lý do thu" : "Lý do chi"}} </div>
+                                <div>
+                                    <dx-text-box [(value)]="receiptObj.ReceiptReason"> </dx-text-box>
+                                </div>
+                            </div>
+                            <div class="dis-flex-cen">
+                                <div class="left-60">
+                                    <div class="grid-2 margin-0">
+                                        <div> {{isInReceipt ? "Nhân viên thu" : "Nhân viên chi"}} </div>
+                                        <div>
+                                            <dx-text-box [disabled]="true" [(value)]="receiptObj.StaffName" ></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-40">
+                                    <div class="grid-2 margin-0">
+                                        <div>Mã NV</div>
+                                        <div>
+                                            <dx-text-box [disabled]="true" [(value)]="receiptObj.StaffCode"  ></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="right-form">
+                        <div class="popup-form-title">CHỨNG TỪ</div>
+                        <div class="short-field-grid">
+                            <div class="form-grid-label"> Số phiếu </div>
+                            <div>
+                                <dx-text-box [disabled]="true" [(value)]="receiptObj.ReceiptNo" ></dx-text-box>
+                            </div>
+                            <div class="form-grid-label"> {{ isInReceipt ? "Ngày thu" : "Ngày chi"}} </div>
+                            <div>
+                                <dx-date-box type="date" [(value)]="receiptObj.ReceiptDate"  displayFormat="dd/MM/yyyy" placeholder="dd/MM/yyyy">
+                                </dx-date-box>
+                            </div>
+                            <div class="form-grid-label"> {{ isInReceipt ? "Giờ thu" : "Giờ chi"}} </div>
+                            <div>
+                                <dx-date-box type="time" [(value)]="receiptObj.ReceiptDate"  displayFormat="hh:mm"></dx-date-box>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="padding-0-16">
+            <div class="popup-form-title" style="padding-top: 0;">CHI TIẾT</div>
+            <div>
+                <nz-table #detailTable class="grid-detail-filter" [nzData]="listOfDetailData" nzBordered nzSize="small"
+                    [nzWidthConfig]="widthDetailConfig" [nzScroll]="scrollDetailConfig" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th>Diễn giải </th>
+                            <th>Số tiền</th>
+                            <th>Mục thu</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-with-control">
+                        <tr *ngFor="let data of detailTable.data; let i = index" [class.dis-none]="!data.IsShow">
+                            <td class="td-out-control">
+                                <div>
+                                    <dx-text-box (onKeyUp)="onKeyUpOnTextBox($event, i)" class="control-in-grid"
+                                        [(value)]="data.Description">
+                                    </dx-text-box>
+                                </div>
+                            </td>
+                            <td class="td-out-control">
+                                <div>
+                                    <dx-number-box (onKeyUp)="onKeyUpOnTextBox($event, i)" (onValueChanged)="onMoneyChange($event, i)" class="control-in-grid"
+                                        [(value)]="data.Money"> </dx-number-box>
+                                </div>
+                            </td>
+                            <td class="text-right td-out-control">
+                                <dx-select-box class="control-in-grid" [(value)]="data.ReceiptCategory"
+                                    [items]="receiptCategory" [searchEnabled]="true" placeholder="{{ isInReceipt ? 'Chọn mục thu' :'Chọn mục chi'}}"
+                                    (onValueChanged)="onSelectItem($event, i)">
+                                </dx-select-box>
+                            </td>
+                            <td class="option-column td-out-control"><i (click)="onClickRemoveDetailItem(i)"
+                                    class="fas fa-trash"></i> </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+</dx-popup>
+
+<app-loading *ngIf="isLoading"></app-loading>
+
+<popup-delete *ngIf="visibleDelPopup"
+    [title]="popupDeleteObj.title"
+    [content]="popupDeleteObj.content"
+    [delItemID]="popupDeleteObj.itemDelId"
+    [(visible)]="popupDeleteObj.visible"
+    (cancelDel)="cancelDel($event)" 
+    (confirmDel)="confirmDelele($event)" ></popup-delete>
+
+    <app-popup-warning *ngIf="popupWarning.visible" [(visible)]="popupWarning.visible" [content]="popupWarning.content" (closePopup)="closeWarningPopup()"></app-popup-warning>

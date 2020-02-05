@@ -1,0 +1,22 @@
+.grid-detail-container{
+    height: 200px;
+}
+.grid-master-container{
+    height: calc(100% - 200px);
+}
+
+.main-content{
+    height: calc(100% - 167px);
+}
+
+.purpose-inward-text{
+    margin-right: 16px;
+}
+
+.inward-purpose{
+    padding: 8px 0;
+}
+
+.inward-purpose .ant-radio-wrapper{
+    color: #333;
+}

@@ -1,0 +1,83 @@
+.trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .trigger:hover {
+    color: #1890ff;
+  }
+
+  .logo {
+    height: 32px;
+    margin: 16px;
+    background: white;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 17px;
+    font-family: 'McLaren', cursive;
+    color: #001529;
+  }
+
+  
+  .logo img {
+    width: 32px;
+}
+
+  nz-header {
+    background: #fff;
+    padding: 0;
+  }
+  .inner-content {
+    /* margin-top: 16px; */
+    padding: 8px;
+    background: #f0f2f5;
+    min-height: 360px;
+    height: 100%;
+    position: relative;
+  }
+
+
+  .outer-layout{
+    height: 100%;
+  }
+  .tab-header-name{
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .header-panel{
+    display: flex;
+  }
+
+
+  .right-header-panel{
+    margin-right: 10px;
+  }
+
+  .header-item{
+    margin-right: 50px;
+  }
+
+  .avatar-icon{
+    margin-right: 8px;
+  }
+
+  .shop-dropdown-btn{
+    min-width: 160px;
+  }
+
+  .shop-name{
+    flex-grow: 1;
+    text-align: center;
+    color: #001529;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  ::ng-deep.custom-toast .dx-toast-content{
+    width: auto !important;
+    min-width: 200px;
+  }

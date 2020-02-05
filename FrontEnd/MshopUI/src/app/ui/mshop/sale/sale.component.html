@@ -1,0 +1,169 @@
+<!-- <div>
+    <div class="toolbars">
+        <div class="toolbar-btn" (click)="showAddInvoicePopup()">
+            <div class="toolbar-btn-icon"> <i nz-icon nzType="file-add" nzTheme="outline"></i></div> <span
+                class="toolbar-btn-text"> Lập hóa
+                đơn
+            </span>
+        </div>
+        <div class="toolbar-btn" (click)="showAddInvoice()">
+            <div class="toolbar-btn-icon"> <i class="fas fa-eye"></i> </div> <span class="toolbar-btn-text"> Xem </span>
+        </div>
+        <div class="toolbar-btn" (click)="showAddInvoice()">
+            <div class="toolbar-btn-icon"> <i class="fas fa-sync-alt"></i> </div> <span class="toolbar-btn-text"> Nạp
+            </span>
+        </div>
+    </div>
+    <div class="data-table">
+        <nz-table #masterTable [nzData]="listOfDisplayData" nzBordered nzSize="small" [nzWidthConfig]="widthConfig"
+            [nzScroll]="scrollConfig">
+            <thead>
+                <tr>
+                    <th>Ngày lập phiếu</th>
+                    <th>Người lập phiếu</th>
+                    <th>Số hóa đơn</th>
+                    <th>Tổng tiền</th>
+                    <th>Khách hàng</th>
+                    <th>Diễn giải</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of masterTable.data">
+                    <td>{{ data.InvoiceDate }}</td>
+                    <td>{{ data.Employee }}</td>
+                    <td>{{ data.InvoiceNo }}</td>
+                    <td>{{ data.SumMoney }}</td>
+                    <td>{{ data.Customer }}</td>
+                    <td>{{ data.Description }}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+    <div class="detail-tab"> Chi tiết</div>
+    <div>
+        <nz-table #detailTable [nzData]="listOfDisplayData" nzBordered nzSize="small" [nzWidthConfig]="widthConfig"
+            [nzScroll]="scrollDetailConfig">
+            <thead>
+                <tr>
+                    <th>Ngày lập phiếu</th>
+                    <th>Người lập phiếu</th>
+                    <th>Số hóa đơn</th>
+                    <th>Tổng tiền</th>
+                    <th>Khách hàng</th>
+                    <th>Diễn giải</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of detailTable.data">
+                    <td>{{ data.InvoiceDate }}</td>
+                    <td>{{ data.Employee }}</td>
+                    <td>{{ data.InvoiceNo }}</td>
+                    <td>{{ data.SumMoney }}</td>
+                    <td>{{ data.Customer }}</td>
+                    <td>{{ data.Description }}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+
+<dx-popup class="popup" [width]="960" [height]="600" [showTitle]="true" title="Hóa đơn" [dragEnabled]="false"
+ [(visible)]="isShowPopup">
+    <div *dxTemplate="let data of 'content'">
+        <div class="toolbars">
+            <div class="toolbar-btn" (click)="showAddInwardReceipt()">
+                <div class="toolbar-btn-icon"> <i nz-icon nzType="file-add" nzTheme="outline"></i></div> <span
+                    class="toolbar-btn-text"> Lập hóa
+                    đơn
+                </span>
+            </div>
+            <div class="toolbar-btn" (click)="showAddInwardReceipt()">
+                <div class="toolbar-btn-icon"> <i class="fas fa-eye"></i> </div> <span class="toolbar-btn-text"> Xem
+                </span>
+            </div>
+            <div class="toolbar-btn" (click)="showAddInwardReceipt()">
+                <div class="toolbar-btn-icon"> <i class="fas fa-sync-alt"></i> </div> <span class="toolbar-btn-text">
+                    Nạp
+                </span>
+            </div>
+        </div>
+        <div class="popup-content">
+            <div class="invoice-form">
+                <div class="dis-flex-cen">
+                    <div class="left-side-form-input">
+                        <div class="grid-2-150">
+                            <div>Số phiếu</div>
+                            <div>
+                                <dx-text-box></dx-text-box>
+                            </div>
+                        </div>
+                        <div class="grid-2-150">
+                            <div>Ngày</div>
+                            <div>
+                                <dx-text-box></dx-text-box>
+
+                            </div>
+                        </div>
+                        <div class="grid-2-150">
+                            <div>Nhân viên thu ngân</div>
+                            <div>
+                                <dx-text-box></dx-text-box>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-side-form-input">
+                        <div class="grid-2-150">
+                            <div>Mã khách hàng</div>
+                            <div class="dis-flex-cen">
+                                <div>
+                                    <dx-text-box> </dx-text-box>
+                                </div>
+                                <div class="grid-2">
+                                    <div> SĐT </div>
+                                    <div>
+                                        <dx-text-box> </dx-text-box>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="grid-2-150">
+
+                            <div>Khách hàng</div>
+                            <div>
+                                <dx-text-box></dx-text-box>
+                            </div>
+                        </div>
+                        <div class="grid-2-150">
+                            <div> Địa chỉ </div>
+                            <div>
+                                <dx-text-box></dx-text-box>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-2-150">
+                    <div> Diễn giải </div>
+                    <div>
+                        <dx-text-box></dx-text-box>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    Danh sách hàng hóa
+                </div>
+                <div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</dx-popup> -->
+
+<router-outlet></router-outlet>
+

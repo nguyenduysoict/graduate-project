@@ -1,0 +1,67 @@
+.shop-report-inday{
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom:1px solid#dfdfdf;
+}
+
+.report-panel-item{
+    border: 1px solid #dfdfdf;
+    border-radius: 3px;
+    border-top: 3px solid dodgerblue;
+}
+
+.report-item-header{
+    border-bottom:1px solid#dfdfdf;
+}
+
+.overview-grid-item{
+    background-color: #fff;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.left-panel-board{
+    width: 40%;
+    margin-right: 16px;
+}
+
+.overview-board-item{
+    display: flex;
+}
+.right-panel-board{
+    width: calc(60% - 16px);
+}
+
+.diagram-panel-item{
+    padding-bottom: 16px;
+}
+
+.report-statistic{
+    margin: 16px 0;
+
+}
+.block-item{
+    width: 150px;
+    height: 50px;
+    background: #eeeeee;
+    margin-right: 8px;
+    padding: 7px;
+    font-weight: bold;
+}
+
+::ng-deep .chart, .pie-char {
+    width: 100%;
+    margin: 8px;
+}
+
+.div-outer-pie-chart{
+    /* margin: 0 130px; */
+}
+
+/* ::ng-deep #pie {
+    height: 440px;
+}
+::ng-deep #pie * {
+    margin: 0 auto;
+} */
+

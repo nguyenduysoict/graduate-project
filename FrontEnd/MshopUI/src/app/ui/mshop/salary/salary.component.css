@@ -1,0 +1,30 @@
+.working-day, .salary-table{
+    padding: 24px;
+}
+
+.setting-form-footer {
+    /* position: absolute; */
+    height: 55px;
+    bottom: 1px;
+    /* width: calc(100% - 2px);
+    margin-left: 1px; */
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    color: #e0d;
+  }
+
+
+
+  .section-name{
+    margin-left: 8px;
+  }
+
+  #chart{
+      margin: 16px 0;
+  }
+  #chart .dxc-series-group .dxc-series rect{
+      width: 2px;
+  }

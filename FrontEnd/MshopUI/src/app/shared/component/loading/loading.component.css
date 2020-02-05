@@ -1,0 +1,20 @@
+.loading-panel{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.loading-content{
+    text-align: center;
+    margin: auto;
+}
+
+.loading-icon{
+    width: 70px;
+}
+
+.loading-text{
+    color: #001529;
+    margin-top: 16px;
+}

@@ -1,0 +1,131 @@
+<nz-layout class="outer-layout" id="outer-wrapper">
+    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+        <div class="logo">
+            <img style="margin-left: 6px;" src="../../../assets/images/logo-no-text.png" alt="">
+            <span *ngIf="!isCollapsed"> MShopKeeper </span>
+        </div>
+        <ul nz-menu nzMode="vertical" [nzInlineCollapsed]="isCollapsed" nzTheme="dark">
+            <li *ngIf="!isStaff" nz-menu-item (click)="onSelectMenuItem(0)" routerLink="/mshop/tong-quan">
+                <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+                <span> Tổng quan </span>
+            </li>
+            <li *ngIf="!isStaff"  nz-submenu nzTitle="Báo cáo" nzIcon="user">
+                <ul>
+                    <li nz-menu-item (click)="onSelectMenuItem(1)" routerLink="/mshop/bao-cao/ban-hang">Bán hàng</li>
+                    <!-- <li nz-menu-item (click)="onSelectMenuItem(17)" routerLink="/mshop/bao-cao/thu-chi">Thu, chi</li> -->
+                    <li nz-menu-item (click)="onSelectMenuItem(2)" routerLink="/mshop/bao-cao/kho">Kho</li>
+                </ul>
+            </li>
+            <li nz-submenu nzTitle="Kho" nzIcon="home">
+                <ul>
+                    <li nz-menu-item (click)="onSelectMenuItem(3)" routerLink="/mshop/kho/nhap-kho">Nhập kho</li>
+                    <li nz-menu-item (click)="onSelectMenuItem(4)" routerLink="/mshop/kho/xuat-kho">Xuất kho</li>
+                </ul>
+            </li>
+            <li nz-submenu nzTitle="Quỹ tiền" nzIcon="wallet">
+                <ul>
+                    <li nz-menu-item (click)="onSelectMenuItem(5)" routerLink="/mshop/quy-tien/thu-chi">Thu, chi tiền</li>
+                </ul>
+            </li>
+            <li nz-submenu nzTitle="Hàng hóa" nzIcon="shopping">
+                <ul>
+                    <li (click)="onSelectMenuItem(7)" routerLink="/mshop/hang-hoa" nz-menu-item>Hàng hóa</li>
+                    <li (click)="onSelectMenuItem(8)" routerLink="/mshop/hang-hoa/nhom-hang-hoa" nz-menu-item>Nhóm hàng
+                        hóa</li>
+                    <li (click)="onSelectMenuItem(9)" routerLink="/mshop/hang-hoa/don-vi-tinh" nz-menu-item>Đơn vị tính
+                    </li>
+                </ul>
+            </li>
+            <li *ngIf="!isStaff"  nz-menu-item (click)="onSelectMenuItem(6)" routerLink="/mshop/cua-hang">
+                <i nz-icon nzType="home" nzTheme="outline"></i>
+                <span>Cửa hàng</span>
+            </li>
+            <li *ngIf="!isStaff"  nz-menu-item (click)="onSelectMenuItem(10)" routerLink="/mshop/nhan-vien">
+                <i nz-icon nzType="user" nzTheme="outline"></i>
+                <span>Nhân viên</span>
+            </li>
+
+            <li nz-menu-item (click)="onSelectMenuItem(11)" routerLink="/mshop/khach-hang">
+                <i nz-icon nzType="team" nzTheme="outline"></i>
+                <span>Khách hàng</span>
+            </li>
+            <li nz-menu-item (click)="onSelectMenuItem(12)" routerLink="/mshop/nha-cung-cap">
+                <i nz-icon nzType="solution" nzTheme="outline"></i>
+                <span>Nhà cung cấp</span>
+            </li>
+
+            <li *ngIf="isStaff" nz-submenu nzTitle="Bán hàng" nzIcon="shopping-cart">
+                <ul>
+                    <li nz-menu-item (click)="onSelectMenuItem(14)" routerLink="/mshop/ban-hang/lap-hoa-don">
+                        <span> Lập hóa đơn </span>
+                    </li>
+                    <li nz-menu-item (click)="onSelectMenuItem(16)" routerLink="/mshop/ban-hang/danh-sach-hoa-don">
+                        <span> Danh sách hóa đơn </span>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li *ngIf="isStaff" nz-menu-item (click)="onSelectMenuItem(15)" routerLink="/mshop/tra-cuu-luong">
+                <i nz-icon nzType="money-collect" nzTheme="outline"></i>
+                <span>Tra cứu lương</span>
+            </li>
+
+            <li *ngIf="!isStaff"  nz-menu-item (click)="onSelectMenuItem(13)" routerLink="/mshop/thiet-lap">
+                <i nz-icon nzType="setting"></i>
+                <span>Thiết lập</span>
+            </li>
+        </ul>
+    </nz-sider>
+    <nz-layout>
+        <nz-header class="header-panel">
+            <div class="left-header-panel flex-grow">
+                <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+                    (click)="isCollapsed = !isCollapsed"></i>
+                <span class="tab-header-name">
+                    {{title}}
+                </span>
+            </div>
+            <div class="right-header-panel dis-flex-cen">
+                <button nz-button [disabled]="isStaff" nz-dropdown [nzDropdownMenu]="shopList" class="header-item shop-dropdown-btn">
+                    {{currentShop}}
+                    <i nz-icon nzType="down"></i>
+                </button>
+                <nz-dropdown-menu #shopList="nzDropdownMenu">
+                    <ul nz-menu>
+                        <li nz-menu-item (click)="onSelectShop(item)" *ngFor="let item of shopsList">
+                            {{item.ShopName}}
+                        </li>
+                    </ul>
+                </nz-dropdown-menu>
+                <nz-avatar nzSize="large" nzIcon="user" class="avatar-icon"></nz-avatar>
+                <a nz-dropdown [nzDropdownMenu]="userOption" class="avatar-icon">
+                    {{currentUser}}
+                    <i nz-icon nzType="down"></i>
+                </a>
+                <nz-dropdown-menu #userOption="nzDropdownMenu">
+                    <ul nz-menu nzSelectable>
+                        <li nz-menu-item (click)="logout()"> Đăng xuất </li>
+                    </ul>
+                </nz-dropdown-menu>
+            </div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content" id="mshop-main-content">
+                <router-outlet></router-outlet>
+
+            </div>
+        </nz-content>
+    </nz-layout>
+</nz-layout>
+
+<dx-toast class="custom-toast" [displayTime]="2000" [visible]="toastVisible" [type]="toastType"
+[message]="toastMessage"> 
+<dxo-position
+        my="top right" 
+        at="top right"
+        of="window"
+        offset="-50 120"
+        >
+    </dxo-position>
+ </dx-toast>

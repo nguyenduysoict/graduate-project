@@ -1,0 +1,87 @@
+<div *ngIf="!isLoading" id="unit-content">
+    <div class="toolbars">
+        <div class="toolbar-btn" (click)="onClickAddNew()">
+            <div class="toolbar-btn-icon"> <i class="fas fa-plus"></i> </div> <span class="toolbar-btn-text"> Thêm mới
+            </span>
+        </div>
+        <div class="toolbar-btn">
+            <div class="toolbar-btn-icon"> <i class="fas fa-sync-alt"></i> </div> <span class="toolbar-btn-text"> Nạp
+            </span>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="large-grid grid-wrapper">
+            <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small"
+                [nzWidthConfig]="widthConfig" [nzPageSize]="14" [(nzPageIndex)]="pageIndex" [nzScroll]="scrollConfig">
+                <thead>
+                    <tr>
+                        <th>Đơn vị tính </th>
+                        <th>Diễn giải </th>
+                        <!-- <th>Trạng thái</th> -->
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of groupingTable.data" (dblclick)="selectRow(data)">
+                        <td> {{data.UnitName}} </td>
+                        <td> {{data.Description}} </td>
+                        <!-- <td> {{data.Status == 0 ? 'Ngừng theo dõi' : 'Đang theo dõi'}} </td> -->
+                        <td class="option-column">  <i (click)="editItem(data)" class="option-icon fas fa-pencil-alt"></i> <i (click)="onClickRemove(data)" class="option-icon fas fa-trash"></i>   </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
+<dx-popup *ngIf="popupVisible" [showTitle]="true" [width]="500" [height]="'auto'" [title]="popupTitle" [dragEnabled]="true"
+     [(visible)]="popupVisible">
+    <div class="inner-popup-content">
+        <div class="grid-2">
+            <div>Đơn vị tính <span class="require"> *</span></div>
+            <div>
+                <dx-text-box [(value)]="unitObj.UnitName">
+                    <dx-validator>
+                        <dxi-validation-rule type="required" message="Đơn vị tính không được để trống"></dxi-validation-rule>
+                    </dx-validator>
+                </dx-text-box>
+            </div>
+        </div>
+        <div class="grid-2">
+            <div>Diễn giải</div>
+            <div>
+                <dx-text-area [(value)]="unitObj.Description"></dx-text-area>
+            </div>
+        </div>
+        <!-- <div class="grid-2"> 
+            <div></div>
+            <div>
+                <dx-check-box [(value)]="unitObj.Status"></dx-check-box>
+                <span class="m-l-8"> {{unitObj.Status == 1 ? 'Đang theo dõi' : 'Ngừng theo dõi'}} </span>
+            </div>
+        </div> -->
+    </div>
+    <div class="popup-footer">
+        <div class="flex-grow"></div>
+        <div class="popup-footer-btn">
+            <div class="footer-btn">
+                <dx-button stylingMode="contained" text="Lưu" icon="fa fa-save" type="default" [width]="90"
+                    (onClick)="onSave($event)" [useSubmitBehavior]="true">
+                </dx-button>
+            </div>
+            <div class="footer-btn">
+                <dx-button stylingMode="text" text="Hủy" type="normal" [width]="70" (onClick)="onCancel($event)">
+                </dx-button>
+            </div>
+        </div>
+    </div>
+</dx-popup>
+
+<popup-delete *ngIf="visibleDelPopup"
+    [title]="popupDeleteObj.title"
+    [content]="popupDeleteObj.content"
+    [delItemID]="popupDeleteObj.itemDelId"
+    [(visible)]="popupDeleteObj.visible"
+    (cancelDel)="cancelDel($event)" 
+    (confirmDel)="confirmDelele($event)" ></popup-delete>
+
+<app-loading *ngIf="isLoading"></app-loading>

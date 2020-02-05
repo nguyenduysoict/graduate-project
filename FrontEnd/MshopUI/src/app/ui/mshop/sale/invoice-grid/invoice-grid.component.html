@@ -1,0 +1,96 @@
+<div *ngIf="!isLoading" class="invoice-container">
+    <div class="filter-by-date-panel dis-flex-cen">
+        <div class="filter-item">
+            <button nz-button nz-dropdown [nzDropdownMenu]="timeRange" class="header-item">
+                {{selectedPeriod}}
+                <i nz-icon nzType="down"></i>
+            </button>
+            <nz-dropdown-menu #timeRange="nzDropdownMenu">
+                <ul nz-menu class="dropdown-menu">
+                    <li nz-menu-item (click)="onChangePeriod(item)" *ngFor="let item of periods">
+                        {{item.periodName}}
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+        </div>
+        <div class="filter-item">
+            Từ ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" displayFormat="dd/MM/yyyy" [(value)]="startFilterDate" placeholder="dd/MM/yyyy"></dx-date-box>
+        </div>
+        <div class="filter-item">
+            Đến ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" displayFormat="dd/MM/yyyy" [(value)]="endFilterDate" placeholder="dd/MM/yyyy"></dx-date-box>
+        </div> 
+        <div class="filter-item">
+            <button nz-button nzType="primary" (click)="getInvoices()">
+                <i nz-icon nzType="filter" nzTheme="outline"></i>
+                <span> Lấy dữ liệu </span>
+            </button>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="grid-master grid-wrapper">
+            <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small"
+                [nzWidthConfig]="widthMasterConfig" [nzScroll]="scrollMasterConfig">
+                <thead>
+                    <tr>
+                        <th> Số hóa đơn </th>
+                        <th> Người lập phiếu </th>
+                        <th> Ngày lập </th>
+                        <th> Giờ lập </th>
+                        <th> Khách hàng </th>
+                        <th> Điện thoại </th>
+                        <th> Tổng tiền </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of groupingTable.data" (click)="onSelectMaster(data.InvoiceID)">
+                        <td class="text-center">{{ data.InvoiceNo }}</td>
+                        <td class="text-center no-cell">{{ data.StaffName }}</td>
+                        <td class="text-center">{{ data.InvoiceDate | date: 'dd/MM/yyyy' }}</td>
+                        <td class="text-center">{{ data.InvoiceDate | date: 'HH:mm'}}</td>
+                        <td>{{ data.CustomerName }}</td>
+                        <td> {{ data.CustomerPhone }}</td>
+                        <td class="text-right"> {{ data.TotalMoney }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+        <div>
+            <nz-table #detailTable  class="grid-detail" [nzData]="listOfDetailData" nzBordered nzSize="small"
+            [nzShowPagination]="false"
+                [nzWidthConfig]="widthDetailConfig" [nzScroll]="scrollDetailConfig">
+                <thead>
+                    <tr>
+                        <th>Mã hàng hóa</th>
+                        <th>Tên hàng hóa</th>
+                        <th>Màu sắc</th>
+                        <th>Size</th>
+                        <th>Đơn vị tính</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of detailTable.data">
+                        <td>{{ data.SKUCode }}</td>
+                        <td>{{ data.ItemName }}</td>
+                        <td class="text-center">{{ data.Color }}</td>
+                        <td class="text-center">{{ data.Size}}</td>
+                        <td>{{ data.Unit }}</td>
+                        <td class="text-center"> {{ data.UnitPrice }}</td>
+                        <td class="text-right"> {{ data.Amount }}</td>
+                        <td class="text-right"> {{ data.TotalMoney }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>

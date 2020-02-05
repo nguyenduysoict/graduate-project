@@ -1,0 +1,25 @@
+<dx-popup [showTitle]="true" [width]="500" [height]="'auto'" title="MShopKeeper" (onHiding)="onCancel($event)" [dragEnabled]="true"
+ [(visible)]="visible" class="popup-warning">
+    <div class="inner-popup-content dis-flex-cen">
+        <div >
+            <img class="warning-icon" src="../../../../assets/images/warning.jpg" alt="">
+        </div>
+        <div class="font-16 popup-warning-content" [innerHTML]="content">
+        </div>
+    </div>
+    <div class="popup-footer">
+        <div class="flex-grow"></div>
+        <div class="popup-footer-btn">
+            <div class="footer-btn">
+                <dx-button
+                        stylingMode="contained"
+                        text="Đóng"
+                        type="default"
+                        [width]="90"
+                        (onClick)="onClosePopup($event)"
+                        [useSubmitBehavior]="true">
+                    </dx-button>
+            </div>
+        </div>
+    </div>
+</dx-popup>

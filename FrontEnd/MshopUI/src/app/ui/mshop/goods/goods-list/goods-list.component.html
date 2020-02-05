@@ -1,0 +1,222 @@
+<div *ngIf="isShowDataGrid">
+    <div class="toolbars">
+        <div class="toolbar-btn" (click)="onClickAddItem()">
+            <div class="toolbar-btn-icon"> <i class="fas fa-plus"></i> </div> <span class="toolbar-btn-text"> Thêm mới
+            </span>
+        </div>
+        <div class="toolbar-btn" (click)="showAddInwardReceipt()">
+            <div class="toolbar-btn-icon"> <i class="fas fa-sync-alt"></i> </div> <span class="toolbar-btn-text"> Nạp
+            </span>
+        </div>
+    </div>
+    <!-- <div class="filter-by-date-panel dis-flex-cen">
+        <div class="filter-item">
+            <button nz-button nz-dropdown [nzDropdownMenu]="timeRange" class="header-item">
+                Tháng này
+                <i nz-icon nzType="down"></i>
+            </button>
+            <nz-dropdown-menu #timeRange="nzDropdownMenu">
+                <ul nz-menu>
+                    <li nz-menu-item> Hôm nay </li>
+                    <li nz-menu-item> Tuần này </li>
+                    <li nz-menu-item> Tháng này </li>
+                </ul>
+            </nz-dropdown-menu>
+        </div>
+        <div class="filter-item">
+            Từ ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" displayFormat="dd/MM/yyyy" placeholder="dd/MM/yyyy"></dx-date-box>
+        </div>
+        <div class="filter-item">
+            Đến ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" displayFormat="dd/MM/yyyy" placeholder="dd/MM/yyyy"></dx-date-box>
+        </div>
+        <div class="filter-item">
+            <button nz-button nzType="primary">
+                <i nz-icon nzType="filter" nzTheme="outline"></i>
+                <span> Lấy dữ liệu </span>
+            </button>
+        </div>
+    </div> -->
+    <div class="main-content">
+        <div class="grid-master grid-wrapper">
+            <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small"
+                [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig">
+                <thead>
+                    <tr>
+                        <th> Mã SKU </th>
+                        <th>Tên hàng hóa</th>
+                        <th>Nhóm hàng hóa</th>
+                        <th>Đơn vị tính</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of groupingTable.data">
+                        <td>{{ data.SKUCode }}</td>
+                        <td class="no-cell" (click)="onClickEditItem(data)">{{ data.ItemName }}</td>
+                        <td>{{ data.ItemGroupName }}</td>
+                        <td>{{ data.UnitName }}</td>
+                        <td class="option-column">
+                            <i (click)="onClickEditItem(data)" class="option-icon fas fa-pencil-alt"></i>
+                            <i (click)="onClickRemoveItem(data)" class="option-icon fas fa-trash"></i> </td>
+
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+
+</div>
+
+<div class="goods-form" *ngIf="!isShowDataGrid">
+    <div>
+        <form class="goods-form-container">
+            <dx-validation-group>
+                <div class="goods-form-content">
+                    <div class="form-content">
+                        <div class="popup-form-title">THÔNG TIN CƠ BẢN</div>
+                        <div class="short-fields">
+                            <div class="grid-2-s">
+                                <div> Tên hàng hóa <span class="require"> *</span></div>
+                                <div>
+                                    <dx-text-box [(value)]="itemObj.ItemName">
+                                        <dx-validator>
+                                            <dxi-validation-rule type="required" message="Không được để trống">
+                                            </dxi-validation-rule>
+                                        </dx-validator>
+                                    </dx-text-box>
+
+                                </div>
+                            </div>
+                            <div class="grid-2-s">
+                                <div> Nhóm hàng hóa </div>
+                                <div>
+                                    <dx-select-box [(value)]="itemObj.ItemGroupName" valueExpr="ItemGroupName"
+                                        placeholder="Nhóm hàng hóa" [dataSource]="itemGroupList"
+                                        displayExpr="ItemGroupName" [searchMode]="searchModeOption"
+                                        (onValueChanged)="onSelectItemGroup($event)"
+                                        [searchExpr]="itemGroupSearchExprOption" [searchEnabled]="true"></dx-select-box>
+                                </div>
+                            </div>
+                            <div class="grid-2-s">
+                                <div> Mã SKU </div>
+                                <div>
+                                    <dx-text-box [(value)]="itemObj.SKUCode">
+                                        <dx-validator>
+                                            <dxi-validation-rule type="required" message="Không được để trống">
+                                            </dxi-validation-rule>
+                                        </dx-validator>
+                                    </dx-text-box>
+                                </div>
+                            </div>
+
+                            <div class="grid-2-s">
+                                <div> Giá mua </div>
+                                <div>
+                                    <dx-number-box #numberBox [min]="0" [showSpinButtons]="true"
+                                        [(value)]="itemObj.BuyPrice">
+                                        <dx-validator>
+                                            <dxi-validation-rule type="required" message="Không được để trống">
+                                            </dxi-validation-rule>
+                                        </dx-validator>
+                                    </dx-number-box>
+                                </div>
+                            </div>
+                            <div class="grid-2-s">
+                                <div> Giá bán </div>
+                                <div>
+                                    <dx-number-box #numberBox [min]="0" [showSpinButtons]="true"
+                                        [(value)]="itemObj.SellPrice">
+                                        <dx-validator>
+                                            <dxi-validation-rule type="required" message="Không được để trống">
+                                            </dxi-validation-rule>
+                                        </dx-validator>
+                                    </dx-number-box>
+                                </div>
+                            </div>
+                            <div class="grid-2-s">
+                                <div> Đơn vị tính cơ bản </div>
+                                <div>
+                                    <dx-select-box [(value)]="itemObj.UnitName" valueExpr="UnitName"
+                                        placeholder="Đơn vị tính" [dataSource]="unitList" displayExpr="UnitName"
+                                        [searchMode]="searchModeOption" [searchExpr]="unitSearchExprOption"
+                                        [searchEnabled]="true"></dx-select-box>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="grid-2-150">
+                                <div> </div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <div class="popup-form-title">THÔNG TIN THUỘC TÍNH</div>
+                        <div class="short-fields">
+                            <div class="grid-2-s">
+                                <div>Màu sắc</div>
+                                <dx-select-box [(value)]="itemObj.ItemColor" valueExpr="Name" placeholder="Màu sắc"
+                                    [dataSource]="colors" displayExpr="Name" [searchMode]="searchModeOption"
+                                    [searchEnabled]="true"></dx-select-box>
+                            </div>
+                            <div class="grid-2-s">
+                                <div>Size</div>
+                                <dx-select-box [(value)]="itemObj.ItemSize" valueExpr="Name" placeholder="Size"
+                                    [dataSource]="sizes" displayExpr="Name" [searchMode]="searchModeOption"
+                                    [searchEnabled]="true"></dx-select-box>
+                            </div>
+                        </div>
+
+                        <div class="popup-form-title">THÔNG TIN BỔ SUNG</div>
+                        <div class="short-fields">
+                            <div class="grid-2-s">
+                                <div>Ảnh hàng hóa</div>
+                                <div class="goods-picture-area">
+                                    <img *ngIf="goodsPicSrc" [src]="goodsPicSrc" class="goods-picture">
+                                    <dx-button class="choose-picture-btn" stylingMode="outlined" text="Chọn ảnh"
+                                        type="default" [width]="120" (onClick)="goodsPic.click()">
+                                    </dx-button>
+                                    <input #goodsPic type="file" class="dis-none" onclick="this.value = null" (change)="uploadImage($event)">
+                                </div>
+                            </div>
+                            <div class="grid-2-s">
+                                <div>Mô tả</div>
+                                <dx-text-area [(value)]="itemObj.Description"></dx-text-area>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="goods-form-footer">
+                    <div class="footer-btn">
+                        <dx-button stylingMode="contained" text="Lưu" icon="fa fa-save"
+                            type="default" [width]="120" (onClick)="onSave($event, 1)">
+                        </dx-button>
+                    </div>
+                    <div class="footer-btn">
+                        <dx-button stylingMode="outlined" icon="fa fa-copy" text="Lưu và nhân bản" type="default"
+                            (onClick)="onSave($event, 2)"> </dx-button>
+                    </div>
+                    <div class="footer-btn">
+                        <dx-button stylingMode="outlined" icon="plus" text="Lưu và thêm mới" type="default"
+                            (onClick)="onSave($event, 3)"> </dx-button>
+                    </div>
+                    <div class="footer-btn">
+                        <dx-button stylingMode="text" text="Hủy" type="normal" [width]="120"
+                            (onClick)="cancelGoodsForm($event)">
+                        </dx-button>
+                    </div>
+                </div>
+            </dx-validation-group>
+        </form>
+    </div>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>
+
+<popup-delete *ngIf="visibleDelPopup" [title]="popupDeleteObj.title" [content]="popupDeleteObj.content"
+    [delItemID]="popupDeleteObj.itemDelId" [(visible)]="popupDeleteObj.itemDelId" (cancelDel)="cancelDel($event)"
+    (confirmDel)="confirmDelele($event)"></popup-delete>

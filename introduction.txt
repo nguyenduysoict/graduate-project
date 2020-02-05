@@ -1,0 +1,7 @@
+Backend:
+- Chạy solution Final.sln như bình thường
+Frontend:
+- Cài nodejs, angular
+- Vào thư mục MShopUI, chạy lệnh ng serve -o
+Database:
+- Mở file script.sql bằng SQL Server => excute

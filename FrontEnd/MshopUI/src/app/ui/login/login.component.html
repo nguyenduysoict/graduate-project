@@ -1,0 +1,47 @@
+ <div class="background-login" *ngIf="!isLoading">
+    <div class="login-logo">
+        <img class="logo-img" src="../../../assets/images/logo-no-text.png" alt="">  
+        <div class="logo-text"> <span>MSHOP</span> KEEPER </div>
+    </div>    
+            
+    <div class="login-block">
+        <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Tên đăng nhập không được để trống!">
+                    <nz-input-group nzPrefixIcon="user">
+                        <input type="text" class="login-input" nz-input formControlName="username" placeholder="Tên đăng nhập" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Mật khẩu không được để trống!">
+                    <nz-input-group nzPrefixIcon="lock">
+                        <input type="password"  class="login-input" nz-input formControlName="password" placeholder="Mật khẩu" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <label nz-checkbox formControlName="remember">
+                        <span style="color:white">Nhớ tài khoản</span>
+                    </label>
+                    <a class="login-form-forgot">Quên mật khẩu</a>
+                    <button nz-button class="login-form-button" [nzType]="'primary'" (click)="login()" >Đăng nhập</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+</div>
+
+<dx-toast class="custom-toast" [displayTime]="2000" [visible]="toastVisible" [type]="toastType"
+[message]="toastMessage"> 
+<dxo-position
+        my="top right" 
+        at="top right"
+        of="window"
+        offset="-50 120"
+        >
+    </dxo-position>
+ </dx-toast>
+
+ <app-loading *ngIf="isLoading"></app-loading>

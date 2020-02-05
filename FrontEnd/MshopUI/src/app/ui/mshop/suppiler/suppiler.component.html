@@ -1,0 +1,205 @@
+<div *ngIf="!isLoading" id="unit-content">
+    <div class="toolbars">
+        <div class="toolbar-btn" (click)="showPopupItem()">
+            <div class="toolbar-btn-icon"> <i class="fas fa-plus"></i> </div> <span class="toolbar-btn-text"> Thêm mới
+            </span>
+        </div>
+        <div class="toolbar-btn">
+            <div class="toolbar-btn-icon"> <i class="fas fa-sync-alt"></i> </div> <span class="toolbar-btn-text"> Nạp
+            </span>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="large-grid grid-wrapper">
+            <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small"
+                [nzWidthConfig]="widthConfig" [nzPageSize]="14" [nzScroll]="scrollConfig">
+                <thead>
+                    <tr>
+                        <th> Mã nhà cung cấp </th>
+                        <th> Tên nhà cung cấp </th>
+                        <th> Số điện thoại </th>
+                        <th> Địa chỉ </th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of groupingTable.data" (dblclick)="onClickEditItem(data)">
+                        <td> {{data.SupplierCode}} </td>
+                        <td> {{data.SupplierName}} </td>
+                        <td> {{data.SupplierPhone}} </td>
+                        <td> {{data.SupplierAddress}} </td>
+                        <td class="option-column"> <i (click)="onClickEditItem(data)"
+                                class="option-icon fas fa-pencil-alt"></i> <i (click)="onClickRemoveItem(data)"
+                                class="option-icon fas fa-trash"></i> </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
+<dx-popup [showTitle]="true" [width]="800" [height]="'auto'" [title]="popupTitle" [dragEnabled]="true"
+   [(visible)]="popupVisible">
+    <div class="inner-popup-content">
+        <div class="popup-form-title">THÔNG TIN CƠ BẢN</div>
+        <div class="dis-flex-cen">
+            <div class="left-side-form">
+                <div class="grid-2-150">
+                    <div> Mã nhà cung cấp <span class="require"> *</span></div>
+                    <div>
+                        <dx-text-box [(value)]="supplierObj.SupplierCode">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Không được để trống">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-form">
+                <div class="grid-2-150">
+                    <div> Tên nhà cung cấp </div>
+                    <div>
+                        <dx-text-box [(value)]="supplierObj.SupplierName">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Không được để trống">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="dis-flex-cen">
+            <div class="left-side-form">
+                <div class="grid-2-150">
+                    <div> Số điện thoại <span class="require"> *</span></div>
+                    <div>
+                        <dx-text-box [(value)]="supplierObj.SupplierPhone">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Không được để trống">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-form">
+                <div class="grid-2-150">
+                    <div> Ngân hàng </div>
+                    <div>
+                        <dx-text-box [(value)]="supplierObj.BankName">
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dis-flex-cen">
+            <div class="left-side-form">
+                <div class="grid-2-150">
+                    <div> Số tài khoản <span class="require"> *</span></div>
+                    <div>
+                        <dx-text-box [(value)]="supplierObj.BankAccount">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Không được để trống">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-form">
+                <div class="grid-2-150">
+                    <div> Chi nhánh NH </div>
+                    <div>
+                        <dx-text-box [(value)]="supplierObj.BankBranch">
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dis-flex-cen">
+            <div class="grid-2-150 w-100">
+                <div> Địa chỉ</div>
+                <div>
+                    <dx-text-box [(value)]="supplierObj.SupplierAddress">
+                    </dx-text-box>
+                </div>
+            </div>
+        </div>
+        <div class="popup-form-title">THÔNG TIN NGƯỜI LIÊN HỆ</div>
+        <div class="dis-flex-cen">
+            <div class="left-side-form">
+                <div class="grid-2-150">
+                    <div> Họ và tên <span class="require"> *</span></div>
+                    <div>
+                        <dx-text-box [(value)]="supplierObj.ContactName">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Không được để trống">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-form">
+                <div class="grid-2-150">
+                    <div> Email </div>
+                    <div>
+                        <dx-text-box [(value)]="supplierObj.ContactEmail">
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dis-flex-cen">
+            <div class="left-side-form">
+                <div class="grid-2-150">
+                    <div> Số điện thoại <span class="require"> *</span></div>
+                    <div>
+                        <dx-text-box [(value)]="supplierObj.ContactPhone">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Không được để trống">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dis-flex-cen">
+            <div class="grid-2-150 w-100">
+                <div> Địa chỉ</div>
+                <div>
+                    <dx-text-box [(value)]="supplierObj.ContactAddress">
+                    </dx-text-box>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="popup-footer">
+        <div class="flex-grow"></div>
+        <div class="popup-footer-btn">
+            <div class="footer-btn">
+                <dx-button stylingMode="contained" text="Lưu" icon="fa fa-save" type="default" [width]="90"
+                    (onClick)="onSave($event)" [useSubmitBehavior]="true">
+                </dx-button>
+            </div>
+            <div class="footer-btn">
+                <dx-button stylingMode="outlined" icon="plus" text="Lưu và thêm mới" type="default"
+                    (onClick)="onSaveAndAdd($event)" width="170" [useSubmitBehavior]="true"> </dx-button>
+            </div>
+            <div class="footer-btn">
+                <dx-button stylingMode="text" text="Hủy" type="normal" [width]="70" (onClick)="onCancel($event)">
+                </dx-button>
+            </div>
+        </div>
+    </div>
+</dx-popup>
+
+<app-loading *ngIf="isLoading"></app-loading>
+
+<popup-delete *ngIf="visibleDelPopup" [title]="popupDeleteObj.title" [content]="popupDeleteObj.content"
+    [delItemID]="popupDeleteObj.itemDelId" [(visible)]="popupDeleteObj.itemDelId" (cancelDel)="cancelDel($event)"
+    (confirmDel)="confirmDelele($event)"></popup-delete>

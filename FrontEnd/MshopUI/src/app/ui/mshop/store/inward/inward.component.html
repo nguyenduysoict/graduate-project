@@ -1,0 +1,273 @@
+<div>
+    <div class="toolbars">
+        <div class="toolbar-btn" (click)="showInwardReceipt(1)">
+            <div class="toolbar-btn-icon"> <i class="fas fa-plus"></i> </div> <span class="toolbar-btn-text"> Thêm mới
+            </span>
+        </div>
+        <div class="toolbar-btn" (click)="showInwardReceipt(3)">
+            <div class="toolbar-btn-icon"> <i class="fas fa-copy"></i> </div> <span class="toolbar-btn-text"> Nhân bản
+            </span>
+        </div>
+        <div class="toolbar-btn" (click)="showInwardReceipt(2)">
+            <div class="toolbar-btn-icon"> <i class="fas fa-eye"></i> </div> <span class="toolbar-btn-text"> Sửa </span>
+        </div>
+        <div class="toolbar-btn" (click)="showInwardReceipt(4)">
+            <div class="toolbar-btn-icon"> <i class="fas fa-trash"></i> </div> <span class="toolbar-btn-text"> Xóa
+            </span>
+        </div>
+        <div class="toolbar-btn" (click)="getInwards()">
+            <div class="toolbar-btn-icon"> <i class="fas fa-sync-alt"></i> </div> <span class="toolbar-btn-text"> Nạp
+            </span>
+        </div>
+    </div>
+    <div class="filter-by-date-panel dis-flex-cen">
+        <div class="filter-item">
+            <button nz-button nz-dropdown [nzDropdownMenu]="timeRange" class="header-item">
+                {{selectedPeriod}}
+                <i nz-icon nzType="down"></i>
+            </button>
+            <nz-dropdown-menu #timeRange="nzDropdownMenu">
+                <ul nz-menu class="dropdown-menu">
+                    <li nz-menu-item (click)="onChangePeriod(item)" *ngFor="let item of periods">
+                        {{item.periodName}}
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
+        </div>
+        <div class="filter-item">
+            Từ ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" displayFormat="dd/MM/yyyy" [(value)]="startFilterDate" placeholder="dd/MM/yyyy"></dx-date-box>
+        </div>
+        <div class="filter-item">
+            Đến ngày
+        </div>
+        <div class="filter-item">
+            <dx-date-box type="date" displayFormat="dd/MM/yyyy" [(value)]="endFilterDate" placeholder="dd/MM/yyyy"></dx-date-box>
+        </div>
+        <div class="filter-item">
+            <button nz-button nzType="primary" (click)="getInwards()">
+                <i nz-icon nzType="filter" nzTheme="outline"></i>
+                <span> Lấy dữ liệu </span>
+            </button>
+        </div>
+    </div>
+    <div class="main-content">
+        <div>
+            <nz-table class="grid-master-filter" #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="small"
+                [nzWidthConfig]="widthConfig" [nzScroll]="scrollConfig">
+                <thead>
+                    <tr>
+                        <th>Ngày </th>
+                        <th>Số phiếu nhập</th>
+                        <th>Đối tượng xuất</th>
+                        <th>Tổng tiền</th>
+                        <th>Diễn giải</th>
+                        <th>Loại chứng từ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of groupingTable.data; let i = index" [class.selected-row]="data.IsSelected"  (click)="onSelectMaster(data.InwardID, i)">
+                        <td class="text-center">{{ data.InwardDate | date: "dd/MM/yyy" }}</td>
+                        <td class="text-center no-cell"  (click)="onClickNo($event, data.InwardID, i)">{{ data.InwardNo }}</td>
+                        <td>{{ data.OutStaffName }}</td>
+                        <td>{{ data.TotalMoney | money }}</td>
+                        <td>{{ data.Description }}</td>
+                        <td>Phiếu nhập kho</td>
+
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+        <div class="detail-tab-name">
+            <div class="detail-text">
+                Chi tiết
+            </div>
+        </div>
+        <div>
+            <nz-table #detailTable class="grid-detail grid-detail-filter" [nzData]="gridDetailData" [nzShowPagination]="false" nzBordered
+                nzSize="small" [nzWidthConfig]="widthDetailConfig" [nzScroll]="scrollDetailConfig">
+                <thead>
+                    <tr>
+                        <th> Mã SKU </th>
+                        <th>Tên hàng hóa </th>
+                        <th> Kho </th>
+                        <th>Đơn vị tính</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of detailTable.data">
+                        <td>{{ data.SKUCode }}</td>
+                        <td>{{ data.ItemName }}</td>
+                        <td>{{ data.FromShop }}</td>
+                        <td>{{ data.Unit }}</td>
+                        <td>{{ data.Amount }}</td>
+                        <td>{{ data.UnitPrice | money}}</td>
+                        <td>{{ data.TotalMoney | money }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
+
+<dx-popup class="popup" [width]="1200" [height]="600" [showTitle]="true" [title]="popupTitle"
+    [dragEnabled]="false" [(visible)]="isShowPopup">
+    <div *dxTemplate="let data of 'content'">
+        <div class="toolbars">
+            <div class="toolbar-btn">
+                <div class="toolbar-btn-icon"> <i class="fas fa-plus"></i> </div> <span class="toolbar-btn-text"> Thêm
+                    mới
+                </span>
+            </div>
+            <div class="toolbar-btn" (click)="onSave()">
+                <div class="toolbar-btn-icon"> <i class="fas fa-save"></i> </div> <span class="toolbar-btn-text"> Lưu
+                </span>
+            </div>
+            <div class="toolbar-btn" (click)="onClickDeleteInward()"> 
+                <div class="toolbar-btn-icon"> <i class="fas fa-trash"></i> </div> <span class="toolbar-btn-text"> Xóa
+                </span>
+            </div>
+        </div>
+        <div class="popup-content">
+            <div>
+                <div class="general-info-form dis-flex">
+                    <div class="left-form">
+                        <div class="popup-form-title">THÔNG TIN CHUNG</div>
+                        <div class="m-r-16">
+                            <div class="dis-flex-cen">
+                                <div class="left-60">
+                                    <div class="grid-2 margin-0">
+                                        <div> Đối tượng xuất </div>
+                                        <div>
+                                            <dx-select-box [dataSource]="exportObjectList"
+                                                displayExpr="Name" valueExpr="Name" [searchEnabled]="true"
+                                                [(value)]="inwardObj.OutStaffName"
+                                                (onValueChanged)="onSelectExportObject($event)" placeholder="Đối tượng xuất">
+                                            </dx-select-box>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-40">
+                                    <div class="grid-2 margin-0">
+                                        <div></div>
+                                        <div>
+                                            <dx-text-box [(value)]="inwardObj.OutStaffCode"></dx-text-box>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-grid-label"> Người giao </div>
+                                <div>
+                                    <dx-text-box [(value)]="inwardObj.Deliver"> </dx-text-box>
+                                </div>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-grid-label"> Diễn giải </div>
+                                <div>
+                                    <dx-text-box [(value)]="inwardObj.Description"> </dx-text-box>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-form">
+                        <div class="popup-form-title">CHỨNG TỪ</div>
+                        <div class="short-field-grid">
+                            <div class="form-grid-label"> Số phiếu </div>
+                            <div>
+                                <dx-text-box [disabled]="true" [(value)]="inwardObj.InwardNo"></dx-text-box>
+                            </div>
+                            <div class="form-grid-label"> Ngày nhập </div>
+                            <div>
+                                <dx-date-box type="date" [(value)]="inwardObj.InwardDate" displayFormat="dd/MM/yyyy"
+                                    placeholder="dd/MM/yyyy">
+                                </dx-date-box>
+                            </div>
+                            <div class="form-grid-label"> Giờ nhập </div>
+                            <div>
+                                <dx-date-box type="time" [(value)]="inwardObj.InwardDate" displayFormat="hh:mm">
+                                </dx-date-box>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="padding-0-16">
+            <div class="popup-form-title">CHI TIẾT</div>
+            <div>
+                <nz-table #detailTable [nzData]="listOfDetailData" nzBordered nzSize="small"
+                    [nzWidthConfig]="widthDetailPopupConfig" [nzScroll]="" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th>Mã SKU</th>
+                            <th>Tên hàng hóa</th>
+                            <th>Nhập từ</th>
+                            <th>Đơn vị tính</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-with-control">
+                        <tr *ngFor="let data of detailTable.data; let i = index" [class.dis-none]="!data.IsShow">
+                            <td class="td-out-control">
+                                <div>
+                                    <dx-select-box class="control-in-grid" [dataSource]="goodsList"
+                                        displayExpr="SKUCode" valueExpr="this" [searchEnabled]="true"
+                                        (onValueChanged)="onSelectItem($event, i)" placeholder="Mã hàng hóa">
+                                    </dx-select-box>
+                                </div>
+                            </td>
+                            <td>
+                                {{data.ItemName}}
+                            </td>
+                            <td class="text-right td-out-control">
+                                <div>
+                                    <dx-select-box class="control-in-grid" [(value)]="data.FromShop"
+                                        valueExpr="name" placeholder="Nhập từ" [dataSource]="itemSourceList"
+                                        displayExpr="name" [searchEnabled]="true">
+                                    </dx-select-box>
+                                </div>
+                            </td>
+                            <td>
+                                {{data.Unit}}
+                            </td>
+                            <td class="td-out-control">
+                                <dx-number-box (onKeyUp)="onKeyUpOnTextBox($event, i)"
+                                    (onValueChanged)="onAmountChange($event, i)" class="control-in-grid"
+                                    [(value)]="data.Amount"> </dx-number-box>
+                            </td>
+                            <td>
+                                {{data.UnitPrice | money}}
+                            </td>
+                            <td>
+                                {{data.TotalMoney | money}}
+                            </td>
+                            <td class="option-column td-out-control"><i (click)="onClickRemoveDetailItem(i)"
+                                    class="fas fa-trash"></i> </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+</dx-popup>
+
+<popup-delete *ngIf="visibleDelPopup"
+    [title]="popupDeleteObj.title"
+    [content]="popupDeleteObj.content"
+    [delItemID]="popupDeleteObj.itemDelId"
+    [(visible)]="popupDeleteObj.visible"
+    (cancelDel)="cancelDel($event)" 
+    (confirmDel)="confirmDelele($event)" ></popup-delete>
+
+
+<app-popup-warning *ngIf="popupWarning.visible" [(visible)]="popupWarning.visible" [content]="popupWarning.content" (closePopup)="closeWarningPopup()"></app-popup-warning>
