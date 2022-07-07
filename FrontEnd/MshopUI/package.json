@@ -23,7 +23,7 @@
     "devextreme-angular": "19.1.6",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ng-zorro-antd": "^8.3.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
